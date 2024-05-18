@@ -9,6 +9,7 @@ import {
   timestamp,
   varchar,
   integer,
+  json
 } from "drizzle-orm/pg-core";
 
 /**
@@ -52,6 +53,7 @@ export const tasks = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull().unique(),
     code: varchar("code", { length: 256 }).notNull().unique(),
+    data: json("data").default(sql`'{}'`).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
