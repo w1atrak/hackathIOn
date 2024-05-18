@@ -41,6 +41,7 @@ export const classes = createTable(
   {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull().unique(),
+    imageUrl: varchar("imageUrl", { length: 256 }).notNull(),
   },
   (example) => ({
     nameIndex: index("class_name_idx").on(example.name),
