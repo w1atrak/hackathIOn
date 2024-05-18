@@ -1,5 +1,7 @@
 import { db } from "~/server/db";
+import Home from "~/app/home";
 export const dynamic = "force-dynamic";
+
 
 export default async function HomePage() {
   const users = await db.query.users.findMany();
@@ -9,6 +11,7 @@ export default async function HomePage() {
       {users.map((user) => (
         <div key={user.id}>{user.name}</div>
       ))}
+      <Home />
     </main>
   );
 }
