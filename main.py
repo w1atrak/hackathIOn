@@ -68,6 +68,9 @@ class UserCreate(BaseModel):
     email: EmailStr
     classId: int
 
+class User(UserCreate):
+    id: int
+
 class ScoreUpdate(BaseModel):
     userId: int
     taskId: int
@@ -87,7 +90,7 @@ async def shutdown():
     await database.disconnect()
 
 
-@app.post("/users/", response_model=UserCreate)
+@app.post("/users/", response_model=User)
 async def create_user(user: UserCreate):
     query = users.insert().values(
         name=user.name,
