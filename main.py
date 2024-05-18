@@ -28,6 +28,7 @@ classes = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column("name", sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column("imageUrl", sqlalchemy.String, nullable=False),
 )
 
 tasks = sqlalchemy.Table(
