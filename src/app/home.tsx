@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from 'react';
-import { db } from "~/server/db";
 import Image from 'next/image';
 
 const Profile = ({ money }: { money: number | null }) => {
