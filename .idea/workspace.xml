@@ -5,17 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d4f2488d-e579-4f40-a164-83b7c0981735" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/WI.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/xdddddd.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/Chatbox.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/Introduction.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/welcome.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/home/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Chatbox.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Chatbox.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Introduction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Introduction.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/home.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/home/home.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/quiz/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/quiz/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/welcome.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/welcome.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/env.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/env.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +25,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="TypeScript JSX File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -54,6 +54,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/app/home" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

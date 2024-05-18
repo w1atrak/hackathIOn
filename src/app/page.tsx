@@ -1,16 +1,20 @@
 "use client";
 
-import WelcomePage from "~/app/welcome";
-export const dynamic = "force-dynamic";
-import ClassSelection from '~/components/ClassSelection';
+import {BrowserRouter as Router, Route, Routes, useRoutes} from 'react-router-dom';
+import WelcomePage from './welcome';
+import HomePage from "~/app/home/page";
+import QuizPage from "~/app/quiz/page";
 
-export default async function HomePage() {
+function App() {
     return (
-        <main className="relative">
-            <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: 'url("/WI.jpg")' }}></div>
-            <div className="relative z-10">
-                <ClassSelection />
-            </div>
-        </main>
+        <Router>
+            <Routes>
+                <Route path="/" element={<WelcomePage />} />
+                <Route path="/home" element={<HomePage />} />
+                <Route path="/quiz" element={<QuizPage />} />
+            </Routes>
+        </Router>
     );
 }
+
+export default App;
