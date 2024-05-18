@@ -1,11 +1,13 @@
-import Home from "~/app/home";
+"use client";
+
+import WelcomePage from "~/app/welcome";
 export const dynamic = "force-dynamic";
 
-export default function HomePage() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-      Hello
-      <Home />
-    </main>
-  );
+export default async function HomePage() {
+    return (
+        <main className="relative">
+            <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: 'url("/WI.jpg")' }}></div>
+            <WelcomePage></WelcomePage>
+        </main>
+    );
 }
