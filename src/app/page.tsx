@@ -8,7 +8,9 @@ export default async function HomePage() {
     return (
         <main className="relative">
             <div className="absolute inset-0 bg-cover bg-center opacity-50" style={{ backgroundImage: 'url("/WI.jpg")' }}></div>
-            <WelcomePage></WelcomePage>
+            <div className="relative z-10">
+                <ClassSelection />
+            </div>
         </main>
     );
 }

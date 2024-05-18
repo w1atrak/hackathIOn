@@ -2,13 +2,24 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { db } from "~/server/db";
-import { users, classes } from "~/server/db/schema";
-import { eq } from "drizzle-orm";
-import type { InferSelectModel } from 'drizzle-orm';
+// import { db } from "~/server/db"; // Zakomentowane, aby nie używać bazy danych
+// import { users, classes } from "~/server/db/schema";
+// import { eq } from "drizzle-orm";
 import Image from 'next/image';
 
-type ClassType = InferSelectModel<typeof classes>;
+// Typ dla klasy z danymi mock
+type ClassType = {
+  id: number;
+  name: string;
+  imageUrl: string;
+};
+
+const mockClasses: ClassType[] = [
+  { id: 5, name: "UX/UI Designer", imageUrl: "/designer.png" },
+  { id: 6, name: "Game Developer", imageUrl: "/game.png" },
+  { id: 7, name: "Full Stack Developer", imageUrl: "/full_stack.png" },
+  { id: 8, name: "AI Engineer", imageUrl: "/ai.png" },
+];
 
 export default function ClassSelection() {
   const router = useRouter();
@@ -16,21 +27,18 @@ export default function ClassSelection() {
   const [classOptions, setClassOptions] = useState<ClassType[]>([]);
 
   useEffect(() => {
-    const fetchClasses = async () => {
+    const fetchMockClasses = async () => {
       try {
-        const classData: ClassType[] = await db.select().from(classes).execute();
-        setClassOptions(classData);
+        // Symulacja opóźnienia sieci
+        await new Promise(resolve => setTimeout(resolve, 500));
+        setClassOptions(mockClasses);
       } catch (error) {
         console.error('Error fetching classes:', error);
         alert('Wystąpił błąd podczas pobierania klas!');
       }
     };
 
-    const fetchData = async () => {
-      await fetchClasses();
-    };
-
-    fetchData().catch(console.error);
+    fetchMockClasses().catch(console.error);
   }, []);
 
   const handleSelectClass = async (classId: number) => {
@@ -44,11 +52,9 @@ export default function ClassSelection() {
     }
 
     try {
-      await db.update(users)
-        .set({ classId })
-        .where(eq(users.id, Number(userId)))
-        .execute();
-      console.log("Class updated successfully");
+      // Symulacja aktualizacji w bazie danych
+      await new Promise(resolve => setTimeout(resolve, 500));
+      console.log(`Class updated successfully to ${classId} for user ${userId}`);
       router.push("/game");
     } catch (error) {
       console.error("Wystąpił błąd podczas aktualizacji klasy:", error);
@@ -59,16 +65,16 @@ export default function ClassSelection() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl mb-8">WYBIERZ SWOJE PRZEZNACZENIE</h1>
+    <main className="flex flex-col items-center text-center justify-center min-h-screen">
+      <h1 className="text-4xl mb-8">WYBIERZ SWOJE<br/>✨PRZEZNACZENIE✨</h1>
       <div className="grid grid-cols-2 gap-4 w-full max-w-md">
         {classOptions.map((cls) => (
           <div
             key={cls.id}
-            className="flex flex-col items-center cursor-pointer"
+            className="image-container cursor-pointer"
             onClick={() => handleSelectClass(cls.id)}
           >
-            <Image src={cls.imageUrl} alt={cls.name} className="mb-2 w-full" width={200} height={200} />
+            <Image src={cls.imageUrl} alt={cls.name} width={200} height={200} />
             <span>{cls.name}</span>
           </div>
         ))}
