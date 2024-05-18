@@ -19,7 +19,7 @@ export const env = createEnv({
    * `NEXT_PUBLIC_`.
    */
   client: {
-    //NEXT_PUBLIC_POSTGRES_URL: z.string().url(),
+    // NEXT_PUBLIC_POSTGRES_URL: z.string().url(),
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
   },
 

@@ -1,5 +1,5 @@
 import os
-
+from fastapi.middleware.cors import CORSMiddleware
 import databases
 import sqlalchemy
 from dotenv import load_dotenv
@@ -28,6 +28,7 @@ classes = sqlalchemy.Table(
     metadata,
     sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
     sqlalchemy.Column("name", sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column("imageUrl", sqlalchemy.String, nullable=False),
 )
 
 tasks = sqlalchemy.Table(
@@ -54,17 +55,30 @@ metadata.create_all(engine)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to your needs
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 class UserCreate(BaseModel):
     name: constr(max_length=256)
     email: EmailStr
     classId: int
 
+class User(UserCreate):
+    id: int
+
 class ScoreUpdate(BaseModel):
     userId: int
     taskId: int
     points: int
 
+class UserClassUpdate(BaseModel):
+    userId: int
+    classId: int
 
 @app.on_event("startup")
 async def startup():
@@ -76,7 +90,7 @@ async def shutdown():
     await database.disconnect()
 
 
-@app.post("/users/", response_model=UserCreate)
+@app.post("/users/", response_model=User)
 async def create_user(user: UserCreate):
     query = users.insert().values(
         name=user.name,
@@ -88,6 +102,20 @@ async def create_user(user: UserCreate):
         return {**user.dict(), "id": last_record_id}
     except sqlalchemy.exc.IntegrityError:
         raise HTTPException(status_code=400, detail="User with this name or email already exists.")
+
+@app.put("/users/class", response_model=UserClassUpdate)
+async def update_user_class(user_class_update: UserClassUpdate):
+    query = users.update().where(
+        users.c.id == user_class_update.userId
+    ).values(
+        classId=user_class_update.classId
+    )
+    result = await database.execute(query)
+
+    if result == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return user_class_update
 
 @app.put("/scores/", response_model=ScoreUpdate)
 async def update_score(score: ScoreUpdate):
@@ -138,4 +166,4 @@ async def get_all_data():
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host='127.0.0.1', port=8080)
+    uvicorn.run(app, host='0.0.0.0', port=8080)
