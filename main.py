@@ -23,6 +23,32 @@ users = sqlalchemy.Table(
     sqlalchemy.Column("created_at", sqlalchemy.TIMESTAMP, server_default=sqlalchemy.func.now(), nullable=False),
 )
 
+classes = sqlalchemy.Table(
+    "hackathion_classes",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("name", sqlalchemy.String, nullable=False, unique=True),
+)
+
+tasks = sqlalchemy.Table(
+    "hackathion_tasks",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("name", sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column("code", sqlalchemy.String, nullable=False, unique=True),
+    sqlalchemy.Column("data", sqlalchemy.JSON, nullable=False, server_default=sqlalchemy.text("'{}'")),
+    sqlalchemy.Column("created_at", sqlalchemy.TIMESTAMP, server_default=sqlalchemy.func.now(), nullable=False),
+)
+
+scores = sqlalchemy.Table(
+    "hackathion_scores",
+    metadata,
+    sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
+    sqlalchemy.Column("points", sqlalchemy.Integer, nullable=False),
+    sqlalchemy.Column("userId", sqlalchemy.Integer, sqlalchemy.ForeignKey("hackathion_users.id"), nullable=False, unique=True),
+    sqlalchemy.Column("taskId", sqlalchemy.Integer, sqlalchemy.ForeignKey("hackathion_tasks.id"), nullable=False, unique=True),
+)
+
 engine = sqlalchemy.create_engine(DATABASE_URL)
 metadata.create_all(engine)
 
@@ -33,6 +59,11 @@ class UserCreate(BaseModel):
     name: constr(max_length=256)
     email: EmailStr
     classId: int
+
+class ScoreUpdate(BaseModel):
+    userId: int
+    taskId: int
+    points: int
 
 
 @app.on_event("startup")
@@ -58,6 +89,51 @@ async def create_user(user: UserCreate):
     except sqlalchemy.exc.IntegrityError:
         raise HTTPException(status_code=400, detail="User with this name or email already exists.")
 
+@app.put("/scores/", response_model=ScoreUpdate)
+async def update_score(score: ScoreUpdate):
+    async with database.transaction():
+        query = scores.select().where(
+            scores.c.userId == score.userId,
+            scores.c.taskId == score.taskId
+        )
+        existing_score = await database.fetch_one(query)
+
+        if existing_score:
+            query = scores.update().where(
+                scores.c.userId == score.userId,
+                scores.c.taskId == score.taskId
+            ).values(
+                points=score.points
+            )
+            await database.execute(query)
+        else:
+            query = scores.insert().values(
+                userId=score.userId,
+                taskId=score.taskId,
+                points=score.points
+            )
+            await database.execute(query)
+
+    return score
+
+@app.get("/data/")
+async def get_all_data():
+    query_users = users.select()
+    query_classes = classes.select()
+    query_tasks = tasks.select()
+    query_scores = scores.select()
+
+    all_users = await database.fetch_all(query_users)
+    all_classes = await database.fetch_all(query_classes)
+    all_tasks = await database.fetch_all(query_tasks)
+    all_scores = await database.fetch_all(query_scores)
+
+    return {
+        "users": all_users,
+        "classes": all_classes,
+        "tasks": all_tasks,
+        "scores": all_scores
+    }
 
 if __name__ == '__main__':
     import uvicorn
