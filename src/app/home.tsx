@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import {Scoreboard} from "~/app/components/scoreboard";
 
 const Profile = ({ money }: { money: number | null }) => {
     return (
@@ -13,19 +14,6 @@ const Profile = ({ money }: { money: number | null }) => {
         </div>
     );
 };
-
-const Scoreboard = () => {
-    return(
-        <div>
-            <h2>Scoreboard</h2>
-            <ol>
-                <li>Player 1</li>
-                <li>Player 2</li>
-                <li>Player 3</li>
-            </ol>
-        </div>
-    );
-}
 
 export default function Home(){
     const [code, setCode] = useState('');
