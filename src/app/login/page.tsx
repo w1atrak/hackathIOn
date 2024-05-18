@@ -1,10 +1,10 @@
 "use client";
 
 import LoginPage from "~/app/login/login";
-
 export const dynamic = "force-dynamic";
 
-export default async function LogInPage() {
+export default function LogInPage() {
+    
     return (
         <div className="relative flex items-center justify-center h-screen flex-col">
             <div className="absolute inset-0 bg-cover bg-center opacity-50"
