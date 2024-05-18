@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {useRouter} from "next/navigation";
+import { useSharedState } from "../context";
 
 type AddedUser = {
   id: number;
@@ -14,6 +15,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const {setUserId} = useSharedState();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,6 +34,7 @@ export default function LoginPage() {
           .json()
           .then((data: AddedUser) => {
             localStorage.setItem("userId", `${data.id}`);
+            setUserId(data.id);
           })
           .catch((error) => {
             console.error("Error creating user:", error);

@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from 'next/image';
 import Chatbox from "~/app/Chatbox";
+import { useSharedState } from "../context";
 
 type ClassType = {
   id: number;
@@ -12,6 +13,7 @@ type ClassType = {
 };
 
 export default function ClassSelection() {
+  const { userId } = useSharedState();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [classOptions, setClassOptions] = useState<ClassType[]>([]);
@@ -108,7 +110,8 @@ export default function ClassSelection() {
   return (
     <main className="flex flex-col items-center text-center justify-center min-h-screen">
       {!classSelected && <div>
-        <h1 className="text-4xl mb-8">WYBIERZ SWOJE<br/>✨PRZEZNACZENIE✨</h1>
+        <h1 className="text-4xl mb-8">WYBIERZ SWOJE<br />✨PRZEZNACZENIE✨</h1>
+        <div>btw twoje id to: {userId}</div>
         <div className="grid grid-cols-2 gap-4 w-full max-w-md">
           {classOptions.map((cls) => (
             <div
