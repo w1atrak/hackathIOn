@@ -1,4 +1,4 @@
-"use strict";
+"use client";
 
 import Home from "~/app/home/home";
 

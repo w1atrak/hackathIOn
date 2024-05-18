@@ -8,7 +8,7 @@ export default function Introduction() {
     const navigate = useNavigate();
     useEffect(() => {
         if (isChatboxComplete) {
-            navigate('/home');
+            navigate('/login');
         }
     }, [isChatboxComplete]);
 
