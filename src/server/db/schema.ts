@@ -8,7 +8,7 @@ import {
   serial,
   timestamp,
   varchar,
-  integer
+  integer,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -23,14 +23,53 @@ export const users = createTable(
   "users",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }).notNull(),
-    points: integer("points").default(0).notNull(),
+    name: varchar("name", { length: 256 }).notNull().unique(),
+    email: varchar("email", { length: 256 }).unique(),
+    classId: integer("classId").references(() => classes.id),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
   },
   (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+    nameIndex: index("user_name_idx").on(example.name),
+  }),
+);
+
+export const classes = createTable(
+  "classes",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull().unique(),
+  },
+  (example) => ({
+    nameIndex: index("class_name_idx").on(example.name),
+  }),
+);
+
+export const tasks = createTable(
+  "tasks",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 256 }).notNull().unique(),
+    code: varchar("code", { length: 256 }).notNull().unique(),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (example) => ({
+    nameIndex: index("task_name_idx").on(example.name),
+  }),
+);
+
+export const scores = createTable(
+  "scores",
+  {
+    id: serial("id").primaryKey(),
+    points: integer("points").notNull(),
+    userId: integer("userId").references(() => users.id),
+    taskId: integer("taskId").references(() => tasks.id),
+  },
+  (example) => ({
+    nameIndex: index("user_idx").on(example.userId),
   }),
 );
