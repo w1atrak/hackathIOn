@@ -29,4 +29,4 @@ Dopasuj pojęcia do ich definicji.
 
 ## Dokumentacja techniczna
 Żeby zobaczyć dokumentację przejdź tutaj:
-[Dokumentacja techniczna](./technical_readme)
+[Dokumentacja techniczna](./technical_readme.md)
