@@ -1,5 +1,7 @@
 "use client";
+
 import { useState } from "react";
+import {useRouter} from "next/navigation";
 
 type AddedUser = {
   id: number;
@@ -9,6 +11,7 @@ type AddedUser = {
 };
 
 export default function LoginPage() {
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
@@ -34,6 +37,7 @@ export default function LoginPage() {
             console.error("Error creating user:", error);
           });
         alert("User created successfully");
+        router.push("/class");
       } else {
         alert("Failed to create user");
       }

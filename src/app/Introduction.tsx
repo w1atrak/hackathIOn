@@ -1,14 +1,15 @@
 import Chatbox from "~/app/Chatbox";
 import {useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
+import {useRouter} from "next/navigation";
 
 
 export default function Introduction() {
     const [isChatboxComplete, setIsChatboxComplete] = useState(false);
-    const navigate = useNavigate();
+    const router = useRouter();
     useEffect(() => {
         if (isChatboxComplete) {
-            navigate('/login');
+            router.push("/login")
         }
     }, [isChatboxComplete]);
 
@@ -17,7 +18,7 @@ export default function Introduction() {
 
     return (
         <div className="relative flex items-center justify-center h-screen flex-col">
-            <h1 className="text-4xl text-white mb-10">Insert tytuł here</h1>
+            <h1 className="text-4xl text-white mb-10">WI are the Champions</h1>
             <img className="w-1/2 mb-0" src="/xdddddd.png" alt="powazny czlowiek"/>
             <Chatbox chatLines={chatLines} setIsChatboxComplete = {setIsChatboxComplete}></Chatbox>
         </div>
