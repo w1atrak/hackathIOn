@@ -1,5 +1,5 @@
 import os
-
+from fastapi.middleware.cors import CORSMiddleware
 import databases
 import sqlalchemy
 from dotenv import load_dotenv
@@ -54,6 +54,13 @@ metadata.create_all(engine)
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Adjust this to your needs
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all HTTP methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 class UserCreate(BaseModel):
     name: constr(max_length=256)
@@ -138,4 +145,4 @@ async def get_all_data():
 if __name__ == '__main__':
     import uvicorn
 
-    uvicorn.run(app, host='127.0.0.1', port=8080)
+    uvicorn.run(app, host='0.0.0.0', port=8080)
