@@ -96,6 +96,20 @@ async def create_user(user: UserCreate):
     except sqlalchemy.exc.IntegrityError:
         raise HTTPException(status_code=400, detail="User with this name or email already exists.")
 
+@app.put("/users/class", response_model=UserClassUpdate)
+async def update_user_class(user_class_update: UserClassUpdate):
+    query = users.update().where(
+        users.c.id == user_class_update.userId
+    ).values(
+        classId=user_class_update.classId
+    )
+    result = await database.execute(query)
+
+    if result == 0:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    return user_class_update
+
 @app.put("/scores/", response_model=ScoreUpdate)
 async def update_score(score: ScoreUpdate):
     async with database.transaction():
