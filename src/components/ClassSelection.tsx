@@ -2,24 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-// import { db } from "~/server/db"; // Zakomentowane, aby nie używać bazy danych
-// import { users, classes } from "~/server/db/schema";
-// import { eq } from "drizzle-orm";
 import Image from 'next/image';
 
-// Typ dla klasy z danymi mock
 type ClassType = {
   id: number;
   name: string;
   imageUrl: string;
 };
-
-const mockClasses: ClassType[] = [
-  { id: 5, name: "UX/UI Designer", imageUrl: "/designer.png" },
-  { id: 6, name: "Game Developer", imageUrl: "/game.png" },
-  { id: 7, name: "Full Stack Developer", imageUrl: "/full_stack.png" },
-  { id: 8, name: "AI Engineer", imageUrl: "/ai.png" },
-];
 
 export default function ClassSelection() {
   const router = useRouter();
@@ -27,22 +16,32 @@ export default function ClassSelection() {
   const [classOptions, setClassOptions] = useState<ClassType[]>([]);
 
   useEffect(() => {
-    const fetchMockClasses = async () => {
+    const fetchClasses = async () => {
       try {
-        // Symulacja opóźnienia sieci
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setClassOptions(mockClasses);
+        const response = await fetch('https://test.nyaaa.me/data/');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: { classes: ClassType[] } = await response.json();
+
+        const classesWithImages: ClassType[] = data.classes.map(cls => ({
+          ...cls,
+          imageUrl: `/${cls.imageUrl}`,
+        }));
+        
+        setClassOptions(classesWithImages);
       } catch (error) {
         console.error('Error fetching classes:', error);
         alert('Wystąpił błąd podczas pobierania klas!');
       }
     };
 
-    fetchMockClasses().catch(console.error);
+    fetchClasses().catch(console.error);
   }, []);
 
   const handleSelectClass = async (classId: number) => {
     setLoading(true);
+    console.log(localStorage);
     const userId = localStorage.getItem("userId");
 
     if (!userId) {
@@ -52,8 +51,18 @@ export default function ClassSelection() {
     }
 
     try {
-      // Symulacja aktualizacji w bazie danych
-      await new Promise(resolve => setTimeout(resolve, 500));
+      const response = await fetch('https://test.nyaaa.me/users/class', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userId: Number(userId), classId })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       console.log(`Class updated successfully to ${classId} for user ${userId}`);
       router.push("/game");
     } catch (error) {
