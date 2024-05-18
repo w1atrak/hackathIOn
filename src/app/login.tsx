@@ -1,50 +1,72 @@
-"use client"
-
+"use client";
 import { useState } from "react";
-import { db } from "~/server/db";
-import { users } from "~/server/db/schema";
+
+type AddedUser = {
+  id: number;
+  name: string;
+  email: string;
+  classId: number;
+};
 
 export default function LoginPage() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-        await db.insert(users).values({ name: username, email })
-            .then((result) => {
-                const userId = result.oid;
-                console.log("User ID:", userId);
-            })
-            .catch((error) => {
-                console.error("Error creating user:", error);
-            });
-        
+    const user = { name: username, email, classId: 5 };
+    try {
+      const res = await fetch("https://test.nyaaa.me/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (res.ok) {
+        res
+          .json()
+          .then((data: AddedUser) => {
+            localStorage.setItem("userId", `${data.id}`);
+          })
+          .catch((error) => {
+            console.error("Error creating user:", error);
+          });
+        alert("User created successfully");
+      } else {
+        alert("Failed to create user");
+      }
 
-        setUsername("");
-        setEmail("");
-    };
+      setUsername("");
+      setEmail("");
+    } catch (error) {
+      console.error("Error creating user:", error);
+    }
+  };
 
-    return (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-            <div>
-                <h1>Login</h1>
-                <form onSubmit={handleSubmit}>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        </main>
-    );
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center">
+      <div>
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-1">
+          <input
+          className="rounded p-3"
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+          className="rounded p-3"
+            type="text"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <button className="bg-blue-500 rounded" type="submit">Login</button>
+        </form>
+      </div>
+    </main>
+  );
 }
