@@ -72,6 +72,9 @@ class ScoreUpdate(BaseModel):
     taskId: int
     points: int
 
+class UserClassUpdate(BaseModel):
+    userId: int
+    classId: int
 
 @app.on_event("startup")
 async def startup():
