@@ -14,13 +14,9 @@ export default function Introduction() {
     }, [isChatboxComplete]);
 
     const chatLines = ["Witamy na Wydziale Informatyki!\n" +
-    "Niezależnie od Twoich aspiracji, to miejsce jest dla Ciebie! Tu, na Wydziale Informatyki, możesz stać się kimkolwiek zechcesz", "Czeka Cię mnóstwo wyzwań, w których pomoże wiedza zdobyta podczas warsztatów. Wybierz swoją klasę i zacznij zarabiać. Pamiętaj, że wielka moc oraz umiejętności niosą ze sobą wielką... stawkę godzinową!\n"];
+    "Niezależnie od Twoich aspiracji, to miejsce jest dla Ciebie! Tu, na WI, możesz stać się kimkolwiek zechcesz.", "Czeka Cię mnóstwo wyzwań, w których pomoże wiedza zdobyta podczas warsztatów. Wybierz swoją klasę i zacznij zarabiać. Pamiętaj, że wielka moc oraz umiejętności niosą ze sobą wielką... stawkę godzinową!\n"];
 
     return (
-        <div className="relative flex items-center justify-center h-screen flex-col">
-            <h1 className="text-4xl text-white mb-10">WI are the Champions</h1>
-            <img className="w-1/2 mb-0" src="/xdddddd.png" alt="powazny czlowiek"/>
-            <Chatbox chatLines={chatLines} setIsChatboxComplete = {setIsChatboxComplete}></Chatbox>
-        </div>
+            <Chatbox chatLines={chatLines} showTitle={true} setIsChatboxComplete = {setIsChatboxComplete}></Chatbox>
     );
 }
