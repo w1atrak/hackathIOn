@@ -110,10 +110,20 @@ const MainComponent = () => {
         if (allTrue) {
             setIsComplete(allTrue);
         } else {
+            alert('Nie wszystkie kable są podłączone poprawnie. Spróbuj jeszcze raz');
             if (money >= 2) setMoney(money - 2);
         }
 
     };
+
+    const surrender = () => {
+        let newMoney = 0;
+        for (const flag of flags) {
+            if (flag.flag) newMoney += 1;
+        }
+        if (newMoney < money) setMoney(newMoney);
+        setIsComplete(true);
+    }
 
     return (
         <main>
@@ -158,25 +168,55 @@ const MainComponent = () => {
                         }}
                         className="flex flex-row -z-10"
                     >
-                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color}}/>
-                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color2}}/>
+                        <div style={{
+                            height: '20px',
+                            width: '10px',
+                            margin: 0,
+                            padding: 0,
+                            background: wires[index].color
+                        }}/>
+                        <div style={{
+                            height: '20px',
+                            width: '10px',
+                            margin: 0,
+                            padding: 0,
+                            background: wires[index].color2
+                        }}/>
                     </div>
                 ))}
-                <button style={{
-                    backgroundColor: '#4CAF50',
-                    border: 'none',
-                    color: 'white',
-                    padding: '15px 32px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                    fontSize: '16px',
-                    margin: '4px 2px',
-                    cursor: 'pointer',
+                <div className="flex flex-row align-middle justify-evenly" style={{
                     position: 'absolute',
                     bottom: 10,
-                }} onClick={checkFlags}>Sprawdź
-                </button>
+                    width: '100%',
+                }}>
+                    <button style={{
+                        backgroundColor: 'red',
+                        border: 'none',
+                        color: 'white',
+                        padding: '15px 32px',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        fontSize: '16px',
+                        margin: '4px 2px',
+                        cursor: 'pointer',
+                    }} onClick={surrender}>Poddaj się
+                    </button>
+                    <button style={{
+                        backgroundColor: '#4CAF50',
+                        border: 'none',
+                        color: 'white',
+                        padding: '15px 32px',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        fontSize: '16px',
+                        margin: '4px 2px',
+                        cursor: 'pointer',
+                    }} onClick={checkFlags}>Sprawdź
+                    </button>
+                </div>
+
             </div>)}
             {isComplete && (<FinalDialog points={money} taskId={1}/>)}
         </main>
