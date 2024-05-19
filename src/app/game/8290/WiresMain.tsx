@@ -30,7 +30,7 @@ const MainComponent = () => {
     const [money, setMoney] = useState(10);
 
     useEffect(() => {
-        alert('Prowadzący powiedział, żebyś podłączył kable RJ-45 Cross. Spróbuj zrobić to poprawnie. Pamiętaj, że za każde błędne sprawdzenie płacisz 2 złote. Powodzenia!');
+        alert('Witaj w kolejnym zadaniu!\nProwadzący powiedział, żebyś podłączył kable RJ-45 Cross.\nSpróbuj zrobić to poprawnie. Pamiętaj, że za każde błędne sprawdzenie płacisz 2 złote.\nPowodzenia!');
     }, []);
 
     const [wires, setWires] = useState<Wire[]>([
