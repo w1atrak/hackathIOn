@@ -2,6 +2,8 @@
 import {QuestionBox} from "~/components/QuestionBox";
 import {Button, Stack} from "@mui/material";
 import {useState} from "react";
+import FinalDialog from "~/components/FinalDialog";
+import {useSharedState} from "~/app/context";
 
 export interface QuizQuestion {
     id: number;
@@ -21,7 +23,10 @@ interface UserAnswer {
 
 export const QuizGame = (props: QuizGameProps) => {
 
+    const {userId} = useSharedState();
     const [userAnswers, setUserAnswers] = useState<UserAnswer[]>([]);
+    const [userScore, setUserScore] = useState(0)
+    const [displayFinalDialog, setDisplayFinalDialog] = useState(false)
 
     const handleOptionChange = (userAnswer: string, questionId: number) => {
 
@@ -45,28 +50,36 @@ export const QuizGame = (props: QuizGameProps) => {
         let correctAnswers = 0;
         userAnswers.forEach(answer => {
             const question = props.questions.find(que => que.id === answer.questionId);
+
             if (question?.answer === answer.answer) {
                 correctAnswers++;
             }
         })
-        // todo do sth with correct answers !!!
+
+        setUserScore(correctAnswers);
+        setDisplayFinalDialog(true);
     }
 
     return <>
-        {
-            props.questions.map((question, questionIndex) => {
-                return <QuestionBox id={questionIndex}
-                                    key={questionIndex}
-                                    question={question.question}
-                                    options={question.options}
-                                    answer={question.answer}
-                                    handler={(answer) => {
-                                        handleOptionChange(answer, questionIndex);
-                                    }}/>
-            })
+        {displayFinalDialog ? <FinalDialog points={userScore} userId={userId} taskId={1}/>:
+            <>
+                {
+                    props.questions.map((question) => {
+                        return <QuestionBox id={question.id}
+                                            key={question.id}
+                                            question={question.question}
+                                            options={question.options}
+                                            answer={question.answer}
+                                            handler={(answer) => {
+                                                handleOptionChange(answer, question.id);
+                                            }}/>
+                    })
+                }
+
+                <Stack style={{marginTop: '16px'}} spacing={2} direction="row">
+                    <Button onClick={handleSubmit} variant="contained">Submit</Button>
+                </Stack>
+            </>
         }
-        <Stack spacing={2} direction="row">
-            <Button onClick={handleSubmit} variant="contained">Submit</Button>
-        </Stack>
     </>
 }
