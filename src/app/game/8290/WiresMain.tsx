@@ -17,6 +17,7 @@ interface Wire {
     color2: string;
     position: Position;
     startPosition: Position;
+    num: number;
 }
 
 interface Flag {
@@ -29,25 +30,25 @@ const MainComponent = () => {
     const [money, setMoney] = useState(10);
 
     const [wires, setWires] = useState<Wire[]>([
-        { color: 'white', color2: 'orange', position: { x: 80, y: 100 }, startPosition: { x: 80, y: 100 }},
-        { color: 'orange', color2: 'orange', position: { x: 80, y: 130 }, startPosition: { x: 80, y: 130 }},
-        { color: 'white', color2: 'green', position: { x: 80, y: 160 }, startPosition: { x: 80, y: 160}},
-        { color: 'blue', color2: 'blue', position: { x: 80, y: 190 }, startPosition: { x: 80, y: 190 }},
-        { color: 'white', color2: 'blue', position: { x: 80, y: 220 }, startPosition: { x: 80, y: 220 }},
-        { color: 'green', color2: 'green', position: { x: 80, y: 250 }, startPosition: { x: 80, y: 250 }},
-        { color: 'white', color2: 'brown', position: { x: 80, y: 280 }, startPosition: { x: 80, y: 280 }},
-        { color: 'brown', color2: 'brown', position: { x: 80, y: 310 }, startPosition: { x: 80, y: 310 }},
+        { color: 'white', color2: 'orange', position: { x: 80, y: 100 }, startPosition: { x: 80, y: 100 }, num: 0},
+        { color: 'orange', color2: 'orange', position: { x: 80, y: 130 }, startPosition: { x: 80, y: 130 }, num: 1},
+        { color: 'white', color2: 'green', position: { x: 80, y: 160 }, startPosition: { x: 80, y: 160}, num: 2},
+        { color: 'blue', color2: 'blue', position: { x: 80, y: 190 }, startPosition: { x: 80, y: 190 }, num: 3},
+        { color: 'white', color2: 'blue', position: { x: 80, y: 220 }, startPosition: { x: 80, y: 220 }, num: 4},
+        { color: 'green', color2: 'green', position: { x: 80, y: 250 }, startPosition: { x: 80, y: 250 }, num: 5},
+        { color: 'white', color2: 'brown', position: { x: 80, y: 280 }, startPosition: { x: 80, y: 280 }, num: 6},
+        { color: 'brown', color2: 'brown', position: { x: 80, y: 310 }, startPosition: { x: 80, y: 310 }, num: 7},
     ]);
 
     const [connectors, setConnectors] = useState<Wire[]>([
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 100 }, startPosition: { x: window.innerWidth-80, y: 100 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 150 }, startPosition: { x: window.innerWidth-80, y: 150 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 200 }, startPosition: { x: window.innerWidth-80, y: 200 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 250 }, startPosition: { x: window.innerWidth-80, y: 250 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 300 }, startPosition: { x: window.innerWidth-80, y: 300 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 350 }, startPosition: { x: window.innerWidth-80, y: 350 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 400 }, startPosition: { x: window.innerWidth-80, y: 400 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 450 }, startPosition: { x: window.innerWidth-80, y: 450 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 100 }, startPosition: { x: window.innerWidth-80, y: 100 }, num: 0},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 150 }, startPosition: { x: window.innerWidth-80, y: 150 }, num: 1},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 200 }, startPosition: { x: window.innerWidth-80, y: 200 }, num: 2},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 250 }, startPosition: { x: window.innerWidth-80, y: 250 }, num: 3},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 300 }, startPosition: { x: window.innerWidth-80, y: 300 }, num: 4},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 350 }, startPosition: { x: window.innerWidth-80, y: 350 }, num: 5},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 400 }, startPosition: { x: window.innerWidth-80, y: 400 }, num: 6},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 450 }, startPosition: { x: window.innerWidth-80, y: 450 }, num: 7},
     ]);
 
     const [flags, setFlags] = useState<Flag[]>([
@@ -164,7 +165,7 @@ const MainComponent = () => {
                             start={wire.startPosition}
                             end={wire.position}
                             color={wire.color2}
-                            num={index}
+                            num={wire.num}
                         />
                     ))}
                 </svg>
@@ -176,6 +177,7 @@ const MainComponent = () => {
                         position={wire.position}
                         onDrag={(e, data) => handleDrag(e, data, index)}
                         onStop={(e, data) => handleStop(e, data, index)}
+                        num={wire.num}
                     />
                 ))}
                 {connectors.map((connector, index) => (

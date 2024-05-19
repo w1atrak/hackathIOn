@@ -15,17 +15,19 @@ interface DraggableWireProps {
     position: Position;
     onDrag: (e: DraggableEvent, data: DraggableData) => void;
     onStop: (e: DraggableEvent, data: DraggableData) => void;
+    num: number;
 }
 
 const offset = 20;
 
-const DraggableWire: React.FC<DraggableWireProps> = ({ color, color2 , position, onDrag, onStop }) => {
+const DraggableWire: React.FC<DraggableWireProps> = ({ color, color2 , position, onDrag, onStop, num }) => {
+    console.log(position, num)
     return (
         <Draggable position={position} onDrag={onDrag} onStop={onStop} bounds={{
-            top: 0,
+            top: 0 - offset*num,
             left: 0,
             right: window.innerWidth - offset,
-            bottom: window.innerHeight - offset
+            bottom: window.innerHeight - offset*(num+1)
         }}
         >
             <div className="flex flex-row" style={{height: '20px', width: '20px', margin: 0, padding: 0}}>
