@@ -4,13 +4,18 @@ import React, {useEffect, useState} from 'react';
 import Image from 'next/image';
 import {Scoreboard} from "~/components/Scoreboard";
 import { useSharedState } from "../context";
-import {User, Class, ApiResponse} from "~/types/types";
+import {User, Class, ApiResponse, Task} from "~/types/types";
+import {useRouter} from "next/navigation";
 const Profile = () => {
 
     const [username, setUsername] = useState("");
     const [className, setClassName] = useState("");
     const [money, setMoney] = useState(0);
-    const {userId, database} = useSharedState();
+    const [data, setData] = useState<ApiResponse | null>(null);
+
+    const {userId} = useSharedState();
+
+
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -22,6 +27,8 @@ const Profile = () => {
                 }
                 const data: ApiResponse = await response.json();
 
+                setData(data);
+
                 const foundUser = data.users.find((user: User) => user.id === userId);
                 if(foundUser) {
                     setUsername(foundUser.name);
@@ -29,7 +36,7 @@ const Profile = () => {
                     if (foundClass) {
                         setClassName(foundClass.name);
 
-                        const totalPoints = database.scores
+                        const totalPoints = data.scores
                             .filter(score => score.userId === userId)
                             .reduce((total, score) => total + score.points, 0);
 
@@ -65,19 +72,34 @@ export default function Home(){
     const [code, setCode] = useState('');
     const [showScoreboard, setShowScoreboard] = useState(false);
 
+    const [data, setData] = useState<ApiResponse | null>(null);
 
+    const router = useRouter();
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
 
-        const correctCode = '1234'; // replace with your actual code
+        const fetchTasks = async () => {
+            try {
+                const response = await fetch('https://test.nyaaa.me/data/');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data: ApiResponse = await response.json();
 
-        if (code === correctCode) {
-            window.location.href = '/quiz'; // replace with your actual page
-        } else {
-            alert('Niepoprawny kod. Spróbuj ponownie');
-            setCode('');
+                setData(data);
+                const isCodeValid = data.tasks.some((task: Task) => task.code === code);
+                if (isCodeValid) {
+                    router.push('/game/' + code);
+                } else {
+                    console.log("The entered code does not match any game's code.");
+                }
+            } catch (error) {
+                console.error('Error fetching classes:', error);
+            }
         }
+
+        fetchTasks().catch(console.error);
     };
     return (
         <main className="flex flex-col items-center space-y-10">
