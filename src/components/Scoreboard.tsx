@@ -3,7 +3,7 @@
 import { ScoreboardRow } from "~/components/ScoreboardRow";
 import { useSharedState } from "~/app/context";
 
-export const UserClass = ["AI Engineer", "Game Dev", "UX Designer", "Full Stack Dev"];
+export const UserClass = [ "UX Designer","Game Dev", "Full Stack Dev", "AI Engineer"];
 
 export const Scoreboard = () => {
   const { database, userId } = useSharedState();
