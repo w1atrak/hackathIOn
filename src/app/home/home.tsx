@@ -1,23 +1,21 @@
 "use client";
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import {Scoreboard} from "~/components/Scoreboard";
+import { Scoreboard } from "~/components/Scoreboard";
 import { useSharedState } from "../context";
-import {User, Class, ApiResponse, Task} from "~/types/types";
-import {useRouter} from "next/navigation";
+import { User, Class, ApiResponse, Task } from "~/types/types";
+import { useRouter } from "next/navigation";
 import { FaTrophy } from 'react-icons/fa'; // Import Font Awesome Trophy icon
 
 const Profile = () => {
-
     const [username, setUsername] = useState("");
     const [className, setClassName] = useState("");
     const [money, setMoney] = useState(0);
     const [data, setData] = useState<ApiResponse | null>(null);
-
     const [imgUrl, setImgUrl] = useState("");
 
-    const {userId} = useSharedState();
+    const { userId } = useSharedState();
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -28,11 +26,10 @@ const Profile = () => {
                     throw new Error('Network response was not ok');
                 }
                 const data: ApiResponse = await response.json();
-
                 setData(data);
 
                 const foundUser = data.users.find((user: User) => user.id === userId);
-                if(foundUser) {
+                if (foundUser) {
                     setUsername(foundUser.name);
                     const foundClass = data.classes.find((cls: Class) => cls.id === foundUser.classId);
                     if (foundClass) {
@@ -46,7 +43,6 @@ const Profile = () => {
                         setMoney(totalPoints)
                     }
                 }
-
             } catch (error) {
                 console.error('Error fetching classes:', error);
                 alert('Wystąpił błąd podczas pobierania klas!');
@@ -57,7 +53,7 @@ const Profile = () => {
     }, []);
 
     return (
-        <div className="flex bg-blue-500 rounded-lg p-5">
+        <div className="flex bg-blue-500 rounded-lg p-5 w-full my-4 max-w-5xl mx-auto">
             <div className="w-1/10">
                 <Image src={imgUrl} alt="Profile" width={100} height={100} />
             </div>
@@ -71,12 +67,10 @@ const Profile = () => {
     );
 };
 
-export default function Home(){
+export default function Home() {
     const [code, setCode] = useState('');
     const [showScoreboard, setShowScoreboard] = useState(false);
-
     const [data, setData] = useState<ApiResponse | null>(null);
-
     const router = useRouter();
 
     const handleSubmit = (event: React.FormEvent) => {
@@ -104,21 +98,24 @@ export default function Home(){
 
         fetchTasks().catch(console.error);
     };
+
     return (
-        <main className="flex flex-col items-center space-y-10 w-full">
-            {!showScoreboard && <div className="space-y-10">
-            <Profile className="w-full mt-10"/>
-            <form onSubmit={handleSubmit} className="flex bg-blue-500 rounded-lg p-5">
-                <input
-                    type="text"
-                    value={code}
-                    onChange={(e) => setCode(e.target.value)}
-                    maxLength={4}
-                    placeholder="Enter 4-digit code"
-                    className="flex-grow mr-2"
-                />
-                <button type="submit" className="flex-none">Submit</button>
-            </form>
+        <main className="flex flex-col items-center w-full mt-5 space-y-10">
+            {!showScoreboard && <div className="w-full space-y-10 max-w-5xl mx-auto px-4">
+                <Profile className="w-full mt-10"/>
+                <form onSubmit={handleSubmit} className="flex bg-blue-500 rounded-lg p-5 w-full">
+                    <input
+                        type="text"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value)}
+                        maxLength={4}
+                        placeholder="Wpisz 4-cyfrowy kod"
+                        className="flex-grow mr-2 p-2 rounded"
+                    />
+                    <button type="submit" className="flex-none bg-white text-blue-500 p-2 rounded hover:bg-gray-200">
+                        Wyślij
+                    </button>
+                </form>
             </div>}
             <button
                 onClick={() => setShowScoreboard(!showScoreboard)}
