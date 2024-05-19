@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import {Scoreboard} from "~/app/components/scoreboard";
+import {Scoreboard} from "~/components/Scoreboard";
 
 const Profile = ({ money }: { money: number | null }) => {
     return (

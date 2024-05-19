@@ -95,47 +95,49 @@ const MainComponent = () => {
 
     return (
         <div>
-            <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+            {!isComplete && (<div>
+                <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
+                    {wires.map((wire, index) => (
+                        <WireLine
+                            key={index}
+                            start={wire.startPosition}
+                            end={wire.position}
+                            num={index}
+                        />
+                    ))}
+                </svg>
                 {wires.map((wire, index) => (
-                    <WireLine
+                    <DraggableWire
                         key={index}
-                        start={wire.startPosition}
-                        end={wire.position}
-                        num={index}
+                        color={wire.color}
+                        position={wire.position}
+                        onDrag={(e, data) => handleDrag(e, data, index)}
+                        onStop={(e, data) => handleStop(e, data, index)}
                     />
                 ))}
-            </svg>
-            {wires.map((wire, index) => (
-                <DraggableWire
-                    key={index}
-                    color={wire.color}
-                    position={wire.position}
-                    onDrag={(e, data) => handleDrag(e, data, index)}
-                    onStop={(e, data) => handleStop(e, data, index)}
-                />
-            ))}
-            {connectors.map((connector, index) => (
-                <WireConnector
-                    key={index}
-                    color={connector.color}
-                    position={connector.position}
-                />
-            ))}
-            <button style={{
-                backgroundColor: '#4CAF50', /* Green */
-                border: 'none',
-                color: 'white',
-                padding: '15px 32px',
-                textAlign: 'center',
-                textDecoration: 'none',
-                display: 'inline-block',
-                fontSize: '16px',
-                margin: '4px 2px',
-                cursor: 'pointer',
-                position: 'absolute',
-                bottom: 10,
-            }} onClick={checkFlags}>Sprawdź
-            </button>
+                {connectors.map((connector, index) => (
+                    <WireConnector
+                        key={index}
+                        color={connector.color}
+                        position={connector.position}
+                    />
+                ))}
+                <button style={{
+                    backgroundColor: '#4CAF50', /* Green */
+                    border: 'none',
+                    color: 'white',
+                    padding: '15px 32px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px',
+                    margin: '4px 2px',
+                    cursor: 'pointer',
+                    position: 'absolute',
+                    bottom: 10,
+                }} onClick={checkFlags}>Sprawdź
+                </button>
+            </div>)}
             {isComplete && (<FinalDialog points={10} taskId={1} />)}
         </div>
     );
