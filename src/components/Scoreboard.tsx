@@ -1,44 +1,45 @@
 "use client";
 
-import {ScoreboardRow} from "~/components/ScoreboardRow";
+import { ScoreboardRow } from "~/components/ScoreboardRow";
+import { useSharedState } from "~/app/context";
 
-export enum UserClass {
-    AI_ENGINEER = 'AI Engineer',
-    GAME_DEV = 'Game Dev',
-    UX_DESIGNER = 'UX Designer',
-    FULL_STACK_DEV = 'Full Stack Dev'
-}
+export const UserClass = ["AI Engineer", "Game Dev", "UX Designer", "Full Stack Dev"];
 
 export const Scoreboard = () => {
-    const usersData = [
-        {
-            username: 'user1',
-            class: UserClass.AI_ENGINEER,
-            score: '14'
-        },
-        {
-            username: 'user2',
-            class: UserClass.FULL_STACK_DEV,
-            score: '2'
-        },
-        {
-            username: 'user3',
-            class: UserClass.UX_DESIGNER,
-            score: '53'
-        },
-        {
-            username: 'user4',
-            class: UserClass.GAME_DEV,
-            score: '23'
-        }
-    ]
+  const { database } = useSharedState();
+  const userScores: Map<number, number> = new Map<number, number>();
+  for (const user of database.users) {
+    userScores.set(
+      user.id,
+      database.scores
+        .filter((score) => score.userId === user.id)
+        .reduce((acc, score) => acc + score.points, 0),
+    );
+  }
+  const usersData = database.users
+    .map((user) => {
+      return {
+        username: user.name,
+        class: UserClass[user.classId - 5],
+        score: userScores.get(user.id) ?? 0,
+      };
+    })
+    .sort((a, b) => b.score - a.score);
 
-    return <>
-        <div style={{display: "flex", flexDirection: "column", gap: '24px'}}>
-            {usersData.map((data, index) => {
-                return <ScoreboardRow key={index} id={index} username={data.username} userClass={data.class} score={data.score}/>
-            })}
-        </div>
-    </>
-
-}
+  return (
+    
+      <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        {usersData.map((data, index) => {
+          return (
+            <ScoreboardRow
+              key={index}
+              id={index}
+              username={data.username}
+              userClass={data.class}
+              score={data.score.toString()}
+            />
+          );
+        })}
+      </div>
+  );
+};
