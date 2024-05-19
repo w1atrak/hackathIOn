@@ -4,6 +4,7 @@ import DraggableWire from './DraggableWire';
 import WireConnector from './WireConnector';
 import WireLine from './WireLine'
 import type { DraggableEvent, DraggableData } from 'react-draggable';
+import FinalDialog from '~/components/FinalDialog';
 
 interface Position {
     x: number;
@@ -22,6 +23,8 @@ interface Flag {
 }
 
 const MainComponent = () => {
+    const [isComplete, setIsComplete] = useState(false);
+
     const [wires, setWires] = useState<Wire[]>([
         { color: 'red', position: { x: 100, y: 100 }, startPosition: { x: 100, y: 100 }},
         { color: 'blue', position: { x: 100, y: 180 }, startPosition: { x: 100, y: 180 }},
@@ -82,6 +85,7 @@ const MainComponent = () => {
 
     const checkFlags = () => {
         const allTrue = flags.every(flag => flag.flag);
+        setIsComplete(allTrue);
         if (allTrue) {
             console.log("Congrats");
         } else {
@@ -132,6 +136,7 @@ const MainComponent = () => {
                 bottom: 10,
             }} onClick={checkFlags}>Sprawdź
             </button>
+            {isComplete && (<FinalDialog points={10} taskId={1} />)}
         </div>
     );
 };

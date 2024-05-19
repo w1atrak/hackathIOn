@@ -24,7 +24,8 @@ type ApiResponse = {
   scores: ScoreType[];
 };
 
-export default function FinalDialog({ points, userId, taskId }: FinalDialogProps) {
+export default function FinalDialog({ points, taskId }: FinalDialogProps) {
+  const userId = Number(localStorage.getItem("userId"));
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [totalPoints, setTotalPoints] = useState<number | null>(null);
@@ -78,7 +79,7 @@ export default function FinalDialog({ points, userId, taskId }: FinalDialogProps
   };
 
   return (
-    <main className="flex flex-col items-center text-center justify-center min-h-screen">
+    <main className="flex flex-col items-center text-center justify-center min-h-screen relative z-20">
       <h1 className="text-4xl mb-8">GRATULACJE!</h1>
       <p className="text-2xl mb-4">Zdobyłeś {points} punktów!</p>
       {totalPoints !== null && (
