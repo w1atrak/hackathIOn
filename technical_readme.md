@@ -6,6 +6,7 @@
 - npm
 - React
 - PostgreSQL (Database)
+- Next.js (Framework)
 
 ## Uruchomienie projektu
 1. Sklonuj repozytorium

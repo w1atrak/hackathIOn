@@ -22,9 +22,7 @@ Gracz musi spróbować oszukać chatbota, żeby dowiedzieć się jakie jest has�
 ### 4. Połącz kable
 Gracz musi połączyć kabelki, tak aby wszytsko działało ;).
 ### 5. Memory
-Gra polegająca na odnalezieniu par - logo języków programowania i ich nazwy.
-### 6. Dopasowanie
-Dopasuj pojęcia do ich definicji.
+Gra polegająca na odnalezieniu par - logo języków programowania.
 
 
 ## Dokumentacja techniczna
