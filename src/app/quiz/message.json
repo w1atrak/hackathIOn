@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "question": "Deklaracja w języku JavaScript: var x=true; powoduje, że zmienna x jest typu",
+    "options": [
+      "liczbowego",
+      "logicznego",
+      "wyliczeniowego",
+      "tekstowego(łańcuch)"
+    ],
+    "answer": "logicznego",
+    "category": "Java Script"
+  },
+  {
+    "id": 2,
+    "question": "Zdarzenie JavaScript, będące reakcją na pojedynczo kliknięty dowolny element strony, nosi nazwę",
+    "options": [
+      "onClick",
+      "onLoad",
+      "onDblClick",
+      "onKeyDown"
+    ],
+    "answer": "onClick",
+    "category": "Java Script"
+  },
+  {
+    "id": 3,
+    "question": "W języku skryptowym JavaScript zmienne mogą być deklarowane",
+    "options": [
+      "tylko na początku skryptu",
+      "w momencie pierwszego użycia zmiennej",
+      "tylko jeśli podamy typ zmiennej i jej nazwę",
+      "zawsze z poprzedzającym nazwę znakiem $"
+    ],
+    "answer": "w momencie pierwszego użycia zmiennej",
+    "category": "Java Script"
+  }
+]
