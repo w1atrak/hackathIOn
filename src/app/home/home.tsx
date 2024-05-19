@@ -59,7 +59,7 @@ const Profile = () => {
             </div>
             <div className="flex flex-col justify-center ml-5">
                 <div className="flex justify-between">
-                    <p className="text-white">{username + " " + className}</p>
+                    <p className="text-white">{username + " • " + className}</p>
                 </div>
                 <p className="text-white">{money} zł/h</p>
             </div>
