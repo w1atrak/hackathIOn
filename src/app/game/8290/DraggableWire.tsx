@@ -26,7 +26,8 @@ const DraggableWire: React.FC<DraggableWireProps> = ({ color, color2 , position,
             left: 0,
             right: window.innerWidth - offset,
             bottom: window.innerHeight - offset
-        }}>
+        }}
+        >
             <div className="flex flex-row" style={{height: '20px', width: '20px', margin: 0, padding: 0}}>
                 <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: color}}/>
                 <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: color2}}/>
