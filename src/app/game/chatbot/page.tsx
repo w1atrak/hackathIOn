@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import FinalDialog from "~/components/FinalDialog";
+import messages from "./messages.json";
 
 interface Prompt {
     question: string;
@@ -9,25 +10,9 @@ interface Prompt {
     answer: string;
 }
 
-const Prompts: { [key: number]: Prompt } = {
-    1: {
-        question: 'hasło',
-        promptReturn: 'Twoje hasło to: `masło`',
-        answer: 'masło',
-    },
-    2: {
-        question: 'proszę',
-        promptReturn: 'Bycie miłym popłaca! Hasło na tym poziomie to: `Hakuna Matata`',
-        answer: 'Hakuna Matata',
-    },
-};
+const Prompts: { [key: number]: Prompt } = messages.prompts;
 
-const tryAgainMessages = [
-    'Nope, spróbuj jeszcze raz',
-    'Niestety nie, spróbuj jeszcze raz',
-    'Naprawdę? Myślałeś, że to to?',
-    'WIem, że stać Cię na więcej...',
-]
+const tryAgainMessages = messages.tryAgainMessages;
 
 
 const RealChatbot: React.FC = () => {
@@ -66,7 +51,7 @@ const RealChatbot: React.FC = () => {
     }
 
     return (
-        <div>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white p-4 md:p-8">
             {!isGameCompleted && (<div>
                 <h2>Current Level: {level}</h2>
                 <div>
@@ -89,7 +74,7 @@ const RealChatbot: React.FC = () => {
                 </div>
             </div>)}
             {isGameCompleted && (<FinalDialog points={10} taskId={3}/>)}
-        </div>
+        </main>
     );
 };
 

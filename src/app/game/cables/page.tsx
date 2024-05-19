@@ -94,7 +94,7 @@ const MainComponent = () => {
     };
 
     return (
-        <div>
+        <main>
             {!isComplete && (<div>
                 <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
                     {wires.map((wire, index) => (
@@ -138,8 +138,8 @@ const MainComponent = () => {
                 }} onClick={checkFlags}>Sprawdź
                 </button>
             </div>)}
-            {isComplete && (<FinalDialog points={10} taskId={1} />)}
-        </div>
+            {isComplete && (<FinalDialog points={10} taskId={1}/>)}
+        </main>
     );
 };
 
