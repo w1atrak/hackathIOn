@@ -40,6 +40,7 @@ export default function WIguessrGame() {
         const wiguessrTask = data.tasks.find((task: TaskType) => task.name === "WIGuessr");
         if (wiguessrTask) {
           setTasks([wiguessrTask]);
+          console.log(wiguessrTask.data);
           const shuffledRooms = shuffleArray(wiguessrTask.data).slice(0, 5);
           console.log("Shuffled and selected rooms:", shuffledRooms);
           setSelectedRooms(shuffledRooms);
