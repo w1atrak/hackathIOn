@@ -39,14 +39,14 @@ const MainComponent = () => {
     ]);
 
     const [connectors, setConnectors] = useState<Wire[]>([
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 100 }, startPosition: { x: window.innerWidth-80, y: 100 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 150 }, startPosition: { x: window.innerWidth-80, y: 150 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 200 }, startPosition: { x: window.innerWidth-80, y: 200 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 250 }, startPosition: { x: window.innerWidth-80, y: 250 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 300 }, startPosition: { x: window.innerWidth-80, y: 300 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 350 }, startPosition: { x: window.innerWidth-80, y: 350 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 400 }, startPosition: { x: window.innerWidth-80, y: 400 }},
-        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 450 }, startPosition: { x: window.innerWidth-80, y: 450 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 100 }, startPosition: { x: 180, y: 100 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 150 }, startPosition: { x: 180, y: 150 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 200 }, startPosition: { x: 180, y: 200 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 250 }, startPosition: { x: 180, y: 250 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 300 }, startPosition: { x: 180, y: 300 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 350 }, startPosition: { x: 180, y: 350 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 400 }, startPosition: { x: 180, y: 400 }},
+        { color: 'gray', color2: 'white', position: { x: 180, y: 450 }, startPosition: { x: 180, y: 450 }},
     ]);
 
     const [flags, setFlags] = useState<Flag[]>([
@@ -110,7 +110,6 @@ const MainComponent = () => {
         if (allTrue) {
             setIsComplete(allTrue);
         } else {
-            alert('Nie wszystkie kable są podłączone poprawnie. Spróbuj jeszcze raz');
             if (money >= 2) setMoney(money - 2);
         }
 
@@ -168,28 +167,16 @@ const MainComponent = () => {
                         }}
                         className="flex flex-row -z-10"
                     >
-                        <div style={{
-                            height: '20px',
-                            width: '10px',
-                            margin: 0,
-                            padding: 0,
-                            background: wires[index].color
-                        }}/>
-                        <div style={{
-                            height: '20px',
-                            width: '10px',
-                            margin: 0,
-                            padding: 0,
-                            background: wires[index].color2
-                        }}/>
+                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color}}/>
+                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color2}}/>
                     </div>
                 ))}
-                <div className="flex flex-row align-middle justify-evenly" style={{
+               <div className="flex flex-row align-middle justify-evenly" style={{
                     position: 'absolute',
                     bottom: 10,
                     width: '100%',
                 }}>
-                    <button style={{
+                <button style={{
                         backgroundColor: 'red',
                         border: 'none',
                         color: 'white',
@@ -201,23 +188,24 @@ const MainComponent = () => {
                         margin: '4px 2px',
                         cursor: 'pointer',
                     }} onClick={surrender}>Poddaj się
-                    </button>
-                    <button style={{
-                        backgroundColor: '#4CAF50',
-                        border: 'none',
-                        color: 'white',
-                        padding: '15px 32px',
-                        textAlign: 'center',
-                        textDecoration: 'none',
-                        display: 'inline-block',
-                        fontSize: '16px',
-                        margin: '4px 2px',
-                        cursor: 'pointer',
-                    }} onClick={checkFlags}>Sprawdź
-                    </button>
-                </div>
+                </button>
+                <button style={{
+                    backgroundColor: '#4CAF50',
+                    border: 'none',
+                    color: 'white',
+                    padding: '15px 32px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px',
+                    margin: '4px 2px',
+                    cursor: 'pointer',
+                }} onClick={checkFlags}>Sprawdź
+                </button>
 
-            </div>)}
+            </div>
+                        </div>)
+}
             {isComplete && (<FinalDialog points={money} taskId={1}/>)}
         </main>
     );
