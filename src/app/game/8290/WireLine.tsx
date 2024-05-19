@@ -18,7 +18,6 @@ const offset = 20;
 
 // We add 20*index to y because the lines shows weirdly...
 const WireLine: React.FC<WireLineProps> = ({ start, end, color, num }) => {
-    console.log('NUM', num)
     return (
         <line
             x1={start.x + offset/2 + 3}

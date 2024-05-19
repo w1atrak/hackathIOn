@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState } from 'react';
 import DraggableWire from './DraggableWire';
 import WireConnector from './WireConnector';
@@ -126,8 +127,36 @@ const MainComponent = () => {
     }
 
     return (
-        <main>
+        <main className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white md:p-8 -z-10">
             {!isComplete && (<div>
+                {connectors.map((connector, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            position: 'absolute',
+                            left: 80,
+                            top: connector.startPosition.y,
+                            height: 20,
+                            width: 20,
+                        }}
+                        className="flex flex-row"
+                    >
+                        <div style={{
+                            height: '20px',
+                            width: '10px',
+                            margin: 0,
+                            padding: 0,
+                            background: wires[index].color
+                        }}/>
+                        <div style={{
+                            height: '20px',
+                            width: '10px',
+                            margin: 0,
+                            padding: 0,
+                            background: wires[index].color2
+                        }}/>
+                    </div>
+                ))}
                 <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
                     {wires.map((wire, index) => (
                         <WireLine
@@ -156,34 +185,6 @@ const MainComponent = () => {
                         position={connector.position}
                     />
                 ))}
-                {connectors.map((connector, index) => (
-                    <div
-                        key={index}
-                        style={{
-                            position: 'absolute',
-                            left: 80,
-                            top: connector.startPosition.y,
-                            height: 20,
-                            width: 20,
-                        }}
-                        className="flex flex-row -z-10"
-                    >
-                        <div style={{
-                            height: '20px',
-                            width: '10px',
-                            margin: 0,
-                            padding: 0,
-                            background: wires[index].color
-                        }}/>
-                        <div style={{
-                            height: '20px',
-                            width: '10px',
-                            margin: 0,
-                            padding: 0,
-                            background: wires[index].color2
-                        }}/>
-                    </div>
-                ))}
                 <div className="flex flex-row align-middle justify-evenly" style={{
                     position: 'absolute',
                     bottom: 10,
@@ -200,10 +201,11 @@ const MainComponent = () => {
                         fontSize: '16px',
                         margin: '4px 2px',
                         cursor: 'pointer',
+                        borderRadius: '12px',
                     }} onClick={surrender}>Poddaj się
                     </button>
                     <button style={{
-                        backgroundColor: '#4CAF50',
+                        backgroundColor: 'green',
                         border: 'none',
                         color: 'white',
                         padding: '15px 32px',
@@ -213,6 +215,7 @@ const MainComponent = () => {
                         fontSize: '16px',
                         margin: '4px 2px',
                         cursor: 'pointer',
+                        borderRadius: '12px',
                     }} onClick={checkFlags}>Sprawdź
                     </button>
                 </div>
