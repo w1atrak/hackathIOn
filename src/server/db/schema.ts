@@ -9,7 +9,8 @@ import {
   timestamp,
   varchar,
   integer,
-  json
+  json,
+  unique,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -54,7 +55,9 @@ export const tasks = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull().unique(),
     code: varchar("code", { length: 256 }).notNull().unique(),
-    data: json("data").default(sql`'{}'`).notNull(),
+    data: json("data")
+      .default(sql`'{}'`)
+      .notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -74,5 +77,6 @@ export const scores = createTable(
   },
   (example) => ({
     nameIndex: index("user_idx").on(example.userId),
+    unq: unique().on(example.userId, example.taskId),
   }),
 );
