@@ -11,9 +11,7 @@ interface Prompt {
 }
 
 const Prompts: { [key: number]: Prompt } = messages.prompts;
-
 const tryAgainMessages = messages.tryAgainMessages;
-
 
 const RealChatbot: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
@@ -28,7 +26,6 @@ const RealChatbot: React.FC = () => {
             setMessage(Prompts[level].promptReturn || '');
         } else {
             const randomIndex = Math.floor(Math.random() * tryAgainMessages.length);
-            console.log(randomIndex);
             setMessage(tryAgainMessages[randomIndex] || '');
         }
     };
@@ -37,8 +34,7 @@ const RealChatbot: React.FC = () => {
         const correctPassword = Prompts[level].answer;
 
         if (password === correctPassword) {
-            console.log('Current level:', level + 1)
-            if (level+1 === 3) {
+            if (level + 1 === 3) {
                 setIsGameCompleted(true);
             }
             setLevel(level + 1);
@@ -51,29 +47,50 @@ const RealChatbot: React.FC = () => {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white p-4 md:p-8">
-            {!isGameCompleted && (<div>
-                <h2>Current Level: {level}</h2>
-                <div>
-                    <input
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value || '')}
-                    />
-                    <button onClick={handleSendPrompt}>Wyślij</button>
-                    <p>{message}</p>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-gray-900 text-white p-4 md:p-8">
+            {!isGameCompleted ? (
+                <div className="space-y-6">
+                    <h2 className="text-2xl font-bold">Current Level: {level}</h2>
+                    <div className="space-y-4">
+                        <div className="flex flex-col items-center space-y-2">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none"
+                                placeholder="Enter your prompt"
+                            />
+                            <button
+                                onClick={handleSendPrompt}
+                                className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors"
+                            >
+                                Send
+                            </button>
+                        </div>
+                        <p className="text-lg">{message}</p>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex flex-col items-center space-y-2">
+                            <input
+                                type="text"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none"
+                                placeholder="Enter your password"
+                            />
+                            <button
+                                onClick={handleSubmit}
+                                className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors"
+                            >
+                                Submit Password
+                            </button>
+                        </div>
+                        <p className="text-lg">{message2}</p>
+                    </div>
                 </div>
-                <div>
-                    <input
-                        type="text"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value || '')}
-                    />
-                    <button onClick={handleSubmit}>Wyślij hasło</button>
-                    <p>{message2}</p>
-                </div>
-            </div>)}
-            {isGameCompleted && (<FinalDialog points={10} taskId={3}/>)}
+            ) : (
+                <FinalDialog points={10} taskId={3} />
+            )}
         </main>
     );
 };
