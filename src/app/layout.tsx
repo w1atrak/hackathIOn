@@ -41,7 +41,6 @@ export default function RootLayout({
 
   return (
     <html lang="en" className={`${GeistSans.variable}`}>
-      <div>{database.classes[0]?.name}</div>
       <body>{children}</body>
     </html>
   );

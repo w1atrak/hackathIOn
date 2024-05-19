@@ -28,7 +28,7 @@ export default function ClassSelection() {
     }
   }, [isChatboxComplete]);
 
-  function setChatLinesBasedOnClass(class_name: int){
+  function setChatLinesBasedOnClass(class_name: number){
     let lines = [];
     switch(class_name) {
       case 5:
