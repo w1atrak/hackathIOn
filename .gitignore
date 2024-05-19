@@ -45,3 +45,5 @@ yarn-error.log*
 *.tsbuildinfo
 
 /.history
+
+package-lock.json
