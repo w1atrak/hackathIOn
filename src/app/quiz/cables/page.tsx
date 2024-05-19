@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import DraggableWire from './DraggableWire';
 import WireConnector from './WireConnector';
 import WireLine from './WireLine'
-import { DraggableEvent, DraggableData } from 'react-draggable';
+import type { DraggableEvent, DraggableData } from 'react-draggable';
 
 interface Position {
     x: number;
@@ -13,19 +13,20 @@ interface Position {
 interface Wire {
     color: string;
     position: Position;
+    startPosition: Position;
 }
 
 const MainComponent = () => {
     const [wires, setWires] = useState<Wire[]>([
-        { color: 'red', position: { x: 0, y: 100 } },
-        { color: 'blue', position: { x: 0, y: 180 } },
-        { color: 'green', position: { x: 0, y: 260 } },
+        { color: 'red', position: { x: 100, y: 100 }, startPosition: { x: 100, y: 100 }},
+        { color: 'blue', position: { x: 100, y: 180 }, startPosition: { x: 100, y: 180 }},
+        { color: 'green', position: { x: 100, y: 260 }, startPosition: { x: 100, y: 260}},
     ]);
 
     const [connectors, setConnectors] = useState<Wire[]>([
-        { color: 'red', position: { x: 100, y: 100 } },
-        { color: 'blue', position: { x: 100, y: 200 } },
-        { color: 'green', position: { x: 100, y: 300 } },
+        { color: 'red', position: { x: 300, y: 100 }, startPosition: { x: 300, y: 100 }},
+        { color: 'blue', position: { x: 300, y: 200 }, startPosition: { x: 300, y: 200 }},
+        { color: 'green', position: { x: 300, y: 300 }, startPosition: { x: 300, y: 300 }},
     ]);
 
     const handleDrag = (e: DraggableEvent, data: DraggableData, index: number) => {
@@ -37,19 +38,19 @@ const MainComponent = () => {
 
         // After a drag event, check if any wire is close enough to any connector
         for (let i = 0; i < wires.length; i++) {
-            for (let j = 0; j < connectors.length; j++) {
+            for (const item of connectors) {
                 const wire = wires[i];
-                const connector = connectors[j];
+                const connector = item;
 
                 // Calculate the distance between the wire and the connector
                 const distance = Math.sqrt(
                     Math.pow(wire.position.x - connector.position.x, 2) +
-                    Math.pow(wire.position.y - connector.position.y, 2)
+                    Math.pow(wire.position.y + 20*i - connector.position.y, 2)
                 );
 
                 // If the wire is close enough to the connector, snap the wire to the connector
-                if (distance < 30) { // "50" is the threshold for "close enough"
-                    newWires[i].position = connector.position;
+                if (distance < 50) { // "50" is the threshold for "close enough"
+                    newWires[i].position = { x: connector.position.x, y: connector.position.y - 20*i };
                     setWires(newWires);
                     break;
                 }
@@ -61,15 +62,22 @@ const MainComponent = () => {
         <div>
             <svg style={{ position: 'absolute', top: 0, left: 0 , width: '100%', height: '100%'}}>
                 {wires.map((wire, index) => (
-                    <DraggableWire
+                    <WireLine
                         key={index}
-                        color={wire.color}
-                        position={wire.position}
-                        onDrag={(e, data) => handleDrag(e, data, index)}
+                        start={wire.startPosition}
+                        end={wire.position}
+                        num={index}
                     />
-                    <WireLine start={{ x: 0, y: index * 80 + 100 }} end={wire.position} />
                 ))}
             </svg>
+            {wires.map((wire, index) => (
+                <DraggableWire
+                    key={index}
+                    color={wire.color}
+                    position={wire.position}
+                    onDrag={(e, data) => handleDrag(e, data, index)}
+                />
+            ))}
             {connectors.map((connector, index) => (
                 <WireConnector
                     key={index}
