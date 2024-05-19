@@ -55,8 +55,10 @@ const RealChatbot: React.FC = () => {
     }
 
     return (
-        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-gray-900 text-white p-4 md:p-8">
-            {!isGameCompleted ? (
+        <div>
+        {!isGameCompleted ? (
+            <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-gray-900 text-white p-4 md:p-8">
+
                 <div className="space-y-6 flex flex-col items-center">
                     <h2 className="text-2xl font-bold">Poziom: {level}</h2>
                     <div className="space-y-4">
@@ -102,10 +104,12 @@ const RealChatbot: React.FC = () => {
                         Poddaj się
                     </button>
                 </div>
-            ) : (
-                <FinalDialog points={money} taskId={3}/>
-            )}
-        </main>
+            </main>
+        ) : (
+            <FinalDialog points={money} taskId={3}/>
+        )
+        }
+        </div>
     );
 };
 
