@@ -13,6 +13,7 @@ interface Position {
 
 interface Wire {
     color: string;
+    color2: string;
     position: Position;
     startPosition: Position;
 }
@@ -27,52 +28,72 @@ const MainComponent = () => {
     const [money, setMoney] = useState(10);
 
     const [wires, setWires] = useState<Wire[]>([
-        { color: 'red', position: { x: 100, y: 100 }, startPosition: { x: 100, y: 100 }},
-        { color: 'blue', position: { x: 100, y: 180 }, startPosition: { x: 100, y: 180 }},
-        { color: 'green', position: { x: 100, y: 260 }, startPosition: { x: 100, y: 260}},
+        { color: 'white', color2: 'orange', position: { x: 80, y: 100 }, startPosition: { x: 80, y: 100 }},
+        { color: 'orange', color2: 'orange', position: { x: 80, y: 130 }, startPosition: { x: 80, y: 130 }},
+        { color: 'white', color2: 'green', position: { x: 80, y: 160 }, startPosition: { x: 80, y: 160}},
+        { color: 'blue', color2: 'blue', position: { x: 80, y: 190 }, startPosition: { x: 80, y: 190 }},
+        { color: 'white', color2: 'blue', position: { x: 80, y: 220 }, startPosition: { x: 80, y: 220 }},
+        { color: 'green', color2: 'green', position: { x: 80, y: 250 }, startPosition: { x: 80, y: 250 }},
+        { color: 'white', color2: 'brown', position: { x: 80, y: 280 }, startPosition: { x: 80, y: 280 }},
+        { color: 'brown', color2: 'brown', position: { x: 80, y: 310 }, startPosition: { x: 80, y: 310 }},
     ]);
 
     const [connectors, setConnectors] = useState<Wire[]>([
-        { color: 'red', position: { x: 300, y: 100 }, startPosition: { x: 300, y: 100 }},
-        { color: 'blue', position: { x: 300, y: 200 }, startPosition: { x: 300, y: 200 }},
-        { color: 'green', position: { x: 300, y: 300 }, startPosition: { x: 300, y: 300 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 100 }, startPosition: { x: window.innerWidth-80, y: 100 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 150 }, startPosition: { x: window.innerWidth-80, y: 150 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 200 }, startPosition: { x: window.innerWidth-80, y: 200 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 250 }, startPosition: { x: window.innerWidth-80, y: 250 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 300 }, startPosition: { x: window.innerWidth-80, y: 300 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 350 }, startPosition: { x: window.innerWidth-80, y: 350 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 400 }, startPosition: { x: window.innerWidth-80, y: 400 }},
+        { color: 'gray', color2: 'white', position: { x: window.innerWidth-80, y: 450 }, startPosition: { x: window.innerWidth-80, y: 450 }},
     ]);
 
     const [flags, setFlags] = useState<Flag[]>([
-        { index: 0, flag: false },
-        { index: 1, flag: false },
         { index: 2, flag: false },
+        { index: 5, flag: false },
+        { index: 0, flag: false },
+        { index: 3, flag: false },
+        { index: 4, flag: false },
+        { index: 1, flag: false },
+        { index: 6, flag: false },
+        { index: 7, flag: false },
     ]);
 
     const handleStop = (e: DraggableEvent, data: DraggableData, index: number) => {
-        const newWires = [...wires];
-        const newFlags = [...flags];
-        let isCloseEnough = false;
+        if (index !== undefined) {
+            const newWires = [...wires];
+            const newFlags = [...flags];
+            let isCloseEnough = false;
 
-        for (let i = 0; i < connectors.length; i++) {
-            const wire = wires[index];
-            const connector = connectors[i];
+            for (let i = 0; i < connectors.length; i++) {
+                const wire = wires[index];
+                const connector = connectors[i];
 
-            const distance = Math.sqrt(
-                Math.pow(wire.position.x + 20 - connector.position.x, 2) +
-                Math.pow(wire.position.y + 20 * index - connector.position.y, 2)
-            );
+                const distance = Math.sqrt(
+                    Math.pow(wire.position.x + 20 - connector.position.x, 2) +
+                    Math.pow(wire.position.y + 20 * index - connector.position.y, 2)
+                );
 
-            if (distance < 30) {
-                newWires[index].position = {x: connector.position.x - 20, y: connector.position.y - 20 * index};
-                setWires(newWires);
-                isCloseEnough = true;
+                if (distance < 30) {
+                    newWires[index].position = {x: connector.position.x - 20, y: connector.position.y - 20 * index};
+                    setWires(newWires);
+                    isCloseEnough = true;
 
-                newFlags[index].flag = i === newFlags[index].index;
-                setFlags(newFlags);
-                break;
+                    newFlags[index].flag = i === newFlags[index].index;
+                    setFlags(newFlags);
+                    break;
+                }
             }
-        }
-        if (!isCloseEnough) {
-            newWires[index].position = newWires[index].startPosition;
-            setWires(newWires);
-            newFlags[index].flag = false;
-            setFlags(newFlags);
+            if (!isCloseEnough) {
+                newWires[index].position = newWires[index].startPosition;
+                setWires(newWires);
+                newFlags[index].flag = false;
+                setFlags(newFlags);
+            }
+
+        } else {
+            console.error('Index is undefined');
         }
     };
 
@@ -92,7 +113,7 @@ const MainComponent = () => {
             if (money >= 2) setMoney(money - 2);
         }
 
-};
+    };
 
     return (
         <main>
@@ -103,6 +124,7 @@ const MainComponent = () => {
                             key={index}
                             start={wire.startPosition}
                             end={wire.position}
+                            color={wire.color2}
                             num={index}
                         />
                     ))}
@@ -111,6 +133,7 @@ const MainComponent = () => {
                     <DraggableWire
                         key={index}
                         color={wire.color}
+                        color2={wire.color2}
                         position={wire.position}
                         onDrag={(e, data) => handleDrag(e, data, index)}
                         onStop={(e, data) => handleStop(e, data, index)}
@@ -123,8 +146,24 @@ const MainComponent = () => {
                         position={connector.position}
                     />
                 ))}
+                {connectors.map((connector, index) => (
+                    <div
+                        key={index}
+                        style={{
+                            position: 'absolute',
+                            left: 80,
+                            top: connector.startPosition.y,
+                            height: 20,
+                            width: 20,
+                        }}
+                        className="flex flex-row -z-10"
+                    >
+                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color}}/>
+                        <div style={{height: '20px', width: '10px', margin: 0, padding: 0, background: wires[index].color2}}/>
+                    </div>
+                ))}
                 <button style={{
-                    backgroundColor: '#4CAF50', /* Green */
+                    backgroundColor: '#4CAF50',
                     border: 'none',
                     color: 'white',
                     padding: '15px 32px',
