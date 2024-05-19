@@ -6,6 +6,8 @@ import {Scoreboard} from "~/components/Scoreboard";
 import { useSharedState } from "../context";
 import {User, Class, ApiResponse, Task} from "~/types/types";
 import {useRouter} from "next/navigation";
+import { FaTrophy } from 'react-icons/fa'; // Import Font Awesome Trophy icon
+
 const Profile = () => {
 
     const [username, setUsername] = useState("");
@@ -13,9 +15,9 @@ const Profile = () => {
     const [money, setMoney] = useState(0);
     const [data, setData] = useState<ApiResponse | null>(null);
 
+    const [imgUrl, setImgUrl] = useState("");
+
     const {userId} = useSharedState();
-
-
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -34,6 +36,7 @@ const Profile = () => {
                     setUsername(foundUser.name);
                     const foundClass = data.classes.find((cls: Class) => cls.id === foundUser.classId);
                     if (foundClass) {
+                        setImgUrl("/" + foundClass.imageUrl);
                         setClassName(foundClass.name);
 
                         const totalPoints = data.scores
@@ -56,7 +59,7 @@ const Profile = () => {
     return (
         <div className="flex bg-blue-500 rounded-lg p-5">
             <div className="w-1/10">
-                <Image src="/profile.jpg" alt="Profile" width={100} height={100} />
+                <Image src={imgUrl} alt="Profile" width={100} height={100} />
             </div>
             <div className="flex flex-col justify-center ml-5">
                 <div className="flex justify-between">
@@ -102,8 +105,9 @@ export default function Home(){
         fetchTasks().catch(console.error);
     };
     return (
-        <main className="flex flex-col items-center space-y-10">
-            <Profile className="mt-10"/>
+        <main className="flex flex-col items-center space-y-10 w-full">
+            {!showScoreboard && <div className="space-y-10">
+            <Profile className="w-full mt-10"/>
             <form onSubmit={handleSubmit} className="flex bg-blue-500 rounded-lg p-5">
                 <input
                     type="text"
@@ -115,8 +119,12 @@ export default function Home(){
                 />
                 <button type="submit" className="flex-none">Submit</button>
             </form>
-            <button onClick={() => setShowScoreboard(!showScoreboard)}>
-                Tablica wyników
+            </div>}
+            <button
+                onClick={() => setShowScoreboard(!showScoreboard)}
+                className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white"
+            >
+                <FaTrophy size={24} />
             </button>
             {showScoreboard && <Scoreboard />}
         </main>

@@ -1,6 +1,5 @@
 import Chatbox from "~/app/Chatbox";
 import {useEffect, useState} from "react";
-import { useNavigate } from 'react-router-dom';
 import {useRouter} from "next/navigation";
 
 
