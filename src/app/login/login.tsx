@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import { useSharedState } from "../context";
+import Chatbox from "~/app/Chatbox";
 
 type AddedUser = {
   id: number;
@@ -17,10 +18,20 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const {setUserId} = useSharedState();
 
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [chatLines, setChatLines] = useState([""]);
+  const [isChatboxComplete, setIsChatboxComplete] = useState(false);
+
+  useEffect(() => {
+    if (isChatboxComplete) {
+      router.push("/class")
+    }
+  }, [isChatboxComplete]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const user = { name: username, email, classId: 5 };
+    const user = { name: username, email, classId: 7 };
     try {
       const res = await fetch("https://test.nyaaa.me/users/", {
         method: "POST",
@@ -39,8 +50,9 @@ export default function LoginPage() {
           .catch((error) => {
             console.error("Error creating user:", error);
           });
-        alert("User created successfully");
-        router.push("/class");
+        // alert("User created successfully");
+        setChatLines([user.name + " witamy na naszym wydziale!\n Tutaj wszystko jest możliwe. Możesz zostać kim tylko chcesz!\n"  ]);
+        setLoggedIn(true);
       } else {
         alert("Failed to create user");
       }
@@ -54,7 +66,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
-      <div>
+      {!loggedIn && <div>
         <h1>Login</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-1">
           <input
@@ -73,7 +85,9 @@ export default function LoginPage() {
           />
           <button className="bg-blue-500 rounded" type="submit">Login</button>
         </form>
-      </div>
+      </div>}
+      {loggedIn &&
+        <Chatbox chatLines={chatLines} showTitle={false} setIsChatboxComplete={setIsChatboxComplete}></Chatbox>}
     </main>
   );
 }

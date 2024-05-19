@@ -1,5 +1,5 @@
 import {Chip, Typography} from "@mui/material";
-import {UserClass} from "~/app/components/scoreboard";
+import {UserClass} from "~/components/Scoreboard";
 
 interface ScoreboardRowProps {
     id: number,

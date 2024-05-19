@@ -1,6 +1,6 @@
 "use client";
 
-import {ScoreboardRow} from "~/app/components/scoreboard-row";
+import {ScoreboardRow} from "~/components/ScoreboardRow";
 
 export enum UserClass {
     AI_ENGINEER = 'AI Engineer',

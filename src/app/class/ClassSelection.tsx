@@ -20,29 +20,35 @@ export default function ClassSelection() {
 
   const [classSelected, setClassSelected] = useState(false);
 
-  const[chatLines, setChatLines] = useState([]);
+  const[chatLines, setChatLines] = useState([""]);
   const [isChatboxComplete, setIsChatboxComplete] = useState(false);
   useEffect(() => {
     if (isChatboxComplete) {
-      // navigate('/home');
+      router.push('/home');
     }
   }, [isChatboxComplete]);
 
-  function setChatLinesBasedOnClass(class_name: string){
+  function setChatLinesBasedOnClass(class_name: int){
     let lines = [];
     switch(class_name) {
-      case 'Class1':
-        lines = ['Welcome to Class1!', 'You have selected a great class!'];
+      case 5:
+        lines = ['Masz oko do detali i wierzysz, że świat można uczynić piękniejszym? Jako UI/UX designer będziesz tworzyć interfejsy tak intuicyjne, że nawet babcia sobie z nimi poradzi, a jednocześnie tak piękne, że konkurencja zzielenieje z zazdrości.'];
         break;
-      case 'Class2':
-        lines = ['Welcome to Class2!', 'This class is challenging!'];
+      case 6:
+        lines = ['Chcesz tworzyć krajobrazy, kształtować osobowości i ścieżki bohaterów? Jako Game developer staniesz się niczym władca wszechświata. Każda linijka Twojego kodu będzie wpływać na świat – co prawda ten wirtualny, ale Twoje gry będą tak wciągające, że będą wydawać się bardziej prawdziwe niż rzeczywistość!'];
         break;
-      case 'Class3':
-        lines = ['Welcome to Class3!', 'This class is fun!'];
+      case 7:
+        lines = ['Lubisz mieć wszystko pod kontrolą i nie ma dla Ciebie rzeczy niemożliwych? Full-Stack developer to ścieżka zawodowa dla Ciebie. Twoje spektrum umiejętności będzie niczym szwajcarski scyzoryk (i równie bezcenne).'];
         break;
+      case 8:
+          lines = ['Chcesz sprawić, że maszyny będą mądrzejsze niż kiedykolwiek oraz kształtować przyszłość? Jako AI Engineer nauczysz się projektować oraz trenować modele, które będą pomagać ludziom we wszelkich zadaniach (przynajmniej dopóki nie przejmą władzy nad światem).'];
+          break;
       default:
         lines = ['Welcome!', 'You have selected a class!'];
     }
+    lines.push("Przynajmniej nie ceramika...");
+    lines.push("Teraz ruszaj na poszukiwania wyzwań! Odwiedź prowadzących na stanowiskach by dowiedzieć się jakie zadania na ciebie czekają. Być może znajdziesz też coś ciekawego między stoiskami...")
+    lines.push("Powodzenia!")
     setChatLines(lines);
   }
 
@@ -97,13 +103,12 @@ export default function ClassSelection() {
       }
 
       console.log(`Class updated successfully to ${classId} for user ${userId}`);
-      router.push("/home");
     } catch (error) {
       console.error("Wystąpił błąd podczas aktualizacji klasy:", error);
       alert("Wystąpił błąd podczas aktualizacji klasy!");
     } finally {
       setLoading(false);
-
+      setChatLinesBasedOnClass(classId);
     }
   };
 
@@ -131,7 +136,7 @@ export default function ClassSelection() {
           <div>
 
           </div>
-          <Chatbox chatLines = {chatLines} ></Chatbox>
+          <Chatbox chatLines = {chatLines} showTitle={false} setIsChatboxComplete={setIsChatboxComplete}></Chatbox>
         </div>
       }
     </main>
