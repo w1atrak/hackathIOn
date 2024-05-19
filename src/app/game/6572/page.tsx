@@ -69,53 +69,66 @@ export default function MemoryGamePage() {
     }
   };
 
+    const surrender = () => {
+        setMoney(0);
+        setIsComplete(true);
+    };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white p-4 md:p-8">
-      {!isComplete && (<div>
-        <h1 className="text-4xl font-bold mb-8 text-center">Memory Game</h1>
-        <h2 className="text-x1 mb-8 text-center w-3/5">Dopasuj logotypy języków programowania w pary</h2>
-        <div className="grid grid-cols-4 gap-4 w-full max-w-4xl mb-4">
-          {tiles.map((language, index) => (
-            <div
-              key={index}
-              className="relative flex items-center justify-center bg-white rounded-lg shadow-lg w-full cursor-pointer"
-              style={{ aspectRatio: "1", height: 0, paddingBottom: "100%" }} // Makes each grid cell a square
-              onClick={() => handleFlip(index)}
-            >
-              <div
-                className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
-                  flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotate-y-180" : ""
-                }`}
-                style={{
-                  backfaceVisibility: "hidden",
-                  transformStyle: "preserve-3d",
-                  transform: flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotateY(180deg)" : "rotateY(0deg)",
-                }}
-              >
-                <div className="flex items-center justify-center w-full h-full bg-white-300 rounded-lg">
-                  {/* Back of the card */}
+    <div>
+      {!isComplete && (<main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white p-4 md:p-8">
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="text-4xl font-bold mb-8 text-center">Memory Game</h1>
+          <h2 className="text-x1 mb-8 text-center w-3/5">Dopasuj logotypy języków programowania w pary</h2>
+          <div className="grid grid-cols-4 gap-4 w-full max-w-4xl mb-4">
+            {tiles.map((language, index) => (
+                <div
+                    key={index}
+                    className="relative flex items-center justify-center bg-white rounded-lg shadow-lg w-full cursor-pointer"
+                    style={{aspectRatio: "1", height: 0, paddingBottom: "100%"}} // Makes each grid cell a square
+                    onClick={() => handleFlip(index)}
+                >
+                  <div
+                      className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
+                          flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotate-y-180" : ""
+                      }`}
+                      style={{
+                        backfaceVisibility: "hidden",
+                        transformStyle: "preserve-3d",
+                        transform: flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotateY(180deg)" : "rotateY(0deg)",
+                      }}
+                  >
+                    <div className="flex items-center justify-center w-full h-full bg-white-300 rounded-lg">
+                      {/* Back of the card */}
+                    </div>
+                  </div>
+                  <div
+                      className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
+                          flippedIndices.includes(index) || matchedIndices.includes(index) ? "" : "rotate-y-180"
+                      }`}
+                      style={{
+                        backfaceVisibility: "hidden",
+                        transformStyle: "preserve-3d",
+                        transform: flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotateY(0deg)" : "rotateY(180deg)",
+                      }}
+                  >
+                    <img src={language.logo} alt={`${language.name} logo`} className="h-3/4 w-3/4 object-contain"/>
+                  </div>
                 </div>
-              </div>
-              <div
-                className={`absolute inset-0 flex items-center justify-center transition-transform duration-500 ${
-                  flippedIndices.includes(index) || matchedIndices.includes(index) ? "" : "rotate-y-180"
-                }`}
-                style={{
-                  backfaceVisibility: "hidden",
-                  transformStyle: "preserve-3d",
-                  transform: flippedIndices.includes(index) || matchedIndices.includes(index) ? "rotateY(0deg)" : "rotateY(180deg)",
-                }}
-              >
-                <img src={language.logo} alt={`${language.name} logo`} className="h-3/4 w-3/4 object-contain" />
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <div className="text-2xl font-semibold">
+            Liczba ruchów: {flipCount}
+          </div>
+          <button
+              onClick={surrender}
+              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-green-700 transition-colors"
+          >
+            Poddaj się
+          </button>
         </div>
-        <div className="text-2xl font-semibold">
-          Liczba ruchów: {flipCount}
-        </div>
-      </div>)}
-      {isComplete && (<FinalDialog points={money} taskId={4} />)}
-    </main>
+      </main>)}
+      {isComplete && (<FinalDialog points={money} taskId={4}/>)}
+    </div>
   );
 }
