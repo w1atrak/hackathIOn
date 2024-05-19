@@ -16,6 +16,11 @@ interface Wire {
     startPosition: Position;
 }
 
+interface Flag {
+    index: number;
+    flag: boolean;
+}
+
 const MainComponent = () => {
     const [wires, setWires] = useState<Wire[]>([
         { color: 'red', position: { x: 100, y: 100 }, startPosition: { x: 100, y: 100 }},
@@ -29,38 +34,64 @@ const MainComponent = () => {
         { color: 'green', position: { x: 300, y: 300 }, startPosition: { x: 300, y: 300 }},
     ]);
 
+    const [flags, setFlags] = useState<Flag[]>([
+        { index: 0, flag: false },
+        { index: 1, flag: false },
+        { index: 2, flag: false },
+    ]);
+
+    const handleStop = (e: DraggableEvent, data: DraggableData, index: number) => {
+        const newWires = [...wires];
+        const newFlags = [...flags];
+        let isCloseEnough = false;
+
+        for (let i = 0; i < connectors.length; i++) {
+            const wire = wires[index];
+            const connector = connectors[i];
+
+            const distance = Math.sqrt(
+                Math.pow(wire.position.x + 20 - connector.position.x, 2) +
+                Math.pow(wire.position.y + 20 * index - connector.position.y, 2)
+            );
+
+            if (distance < 30) {
+                newWires[index].position = {x: connector.position.x - 20, y: connector.position.y - 20 * index};
+                setWires(newWires);
+                isCloseEnough = true;
+
+                newFlags[index].flag = i === newFlags[index].index;
+                setFlags(newFlags);
+                break;
+            }
+        }
+        if (!isCloseEnough) {
+            newWires[index].position = newWires[index].startPosition;
+            setWires(newWires);
+            newFlags[index].flag = false;
+            setFlags(newFlags);
+        }
+    };
+
     const handleDrag = (e: DraggableEvent, data: DraggableData, index: number) => {
         const newWires = [...wires];
         if (newWires[index]) {
             newWires[index].position = { x: data.x, y: data.y };
             setWires(newWires);
         }
+    };
 
-        // After a drag event, check if any wire is close enough to any connector
-        for (let i = 0; i < wires.length; i++) {
-            for (const item of connectors) {
-                const wire = wires[i];
-                const connector = item;
-
-                // Calculate the distance between the wire and the connector
-                const distance = Math.sqrt(
-                    Math.pow(wire.position.x - connector.position.x, 2) +
-                    Math.pow(wire.position.y + 20*i - connector.position.y, 2)
-                );
-
-                // If the wire is close enough to the connector, snap the wire to the connector
-                if (distance < 50) { // "50" is the threshold for "close enough"
-                    newWires[i].position = { x: connector.position.x, y: connector.position.y - 20*i };
-                    setWires(newWires);
-                    break;
-                }
-            }
+    const checkFlags = () => {
+        const allTrue = flags.every(flag => flag.flag);
+        if (allTrue) {
+            console.log("Congrats");
+        } else {
+            console.log("Try again");
         }
     };
 
     return (
         <div>
-            <svg style={{ position: 'absolute', top: 0, left: 0 , width: '100%', height: '100%'}}>
+            <svg style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%'}}>
                 {wires.map((wire, index) => (
                     <WireLine
                         key={index}
@@ -76,6 +107,7 @@ const MainComponent = () => {
                     color={wire.color}
                     position={wire.position}
                     onDrag={(e, data) => handleDrag(e, data, index)}
+                    onStop={(e, data) => handleStop(e, data, index)}
                 />
             ))}
             {connectors.map((connector, index) => (
@@ -85,6 +117,21 @@ const MainComponent = () => {
                     position={connector.position}
                 />
             ))}
+            <button style={{
+                backgroundColor: '#4CAF50', /* Green */
+                border: 'none',
+                color: 'white',
+                padding: '15px 32px',
+                textAlign: 'center',
+                textDecoration: 'none',
+                display: 'inline-block',
+                fontSize: '16px',
+                margin: '4px 2px',
+                cursor: 'pointer',
+                position: 'absolute',
+                bottom: 10,
+            }} onClick={checkFlags}>Sprawdź
+            </button>
         </div>
     );
 };

@@ -23,6 +23,7 @@ const WireLine: React.FC<WireLineProps> = ({ start, end, num }) => {
             x2={end.x + offset/2}
             y2={end.y+20*num + offset/2}
             stroke="black"
+            strokeWidth="2"
         />
     );
 };
