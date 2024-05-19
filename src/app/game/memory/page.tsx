@@ -35,6 +35,7 @@ export default function MemoryGamePage() {
   const [tiles, setTiles] = useState([]);
   const [flipCount, setFlipCount] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [money, setMoney] = useState(0);
 
   useEffect(() => {
     const selectedLanguages = selectRandomLanguages(programmingLanguages, 8);
@@ -45,6 +46,9 @@ export default function MemoryGamePage() {
 
   useEffect(() => {
     if (matchedIndices.length > 0 && matchedIndices.length === tiles.length) {
+      if (flipCount <= 20) setMoney(10);
+      else if (flipCount > 20 && flipCount < 40) setMoney(10 - (flipCount - 20)/2);
+      setMoney(10 - (flipCount-20)/2);
       setIsComplete(true);
     }
   }, [matchedIndices, tiles]);
@@ -111,7 +115,7 @@ export default function MemoryGamePage() {
           Liczba ruchów: {flipCount}
         </div>
       </div>)}
-      {isComplete && (<FinalDialog points={10} taskId={4} />)}
+      {isComplete && (<FinalDialog points={money} taskId={4} />)}
     </main>
   );
 }

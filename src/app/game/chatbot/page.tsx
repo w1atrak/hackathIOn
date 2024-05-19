@@ -20,6 +20,7 @@ const RealChatbot: React.FC = () => {
     const [level, setLevel] = useState(1);
     const [message2, setMessage2] = useState('');
     const [isGameCompleted, setIsGameCompleted] = useState(false);
+    const [money, setMoney] = useState(10);
 
     const handleSendPrompt = () => {
         if (inputValue.includes(Prompts[level].question)) {
@@ -42,6 +43,7 @@ const RealChatbot: React.FC = () => {
             setPassword('');
             setInputValue('');
         } else {
+            if (money >= 2) setMoney(money - 2);
             setMessage2('Incorrect password. Please try again.');
         }
     }
@@ -89,7 +91,7 @@ const RealChatbot: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <FinalDialog points={10} taskId={3} />
+                <FinalDialog points={money} taskId={3} />
             )}
         </main>
     );

@@ -24,6 +24,7 @@ interface Flag {
 
 const MainComponent = () => {
     const [isComplete, setIsComplete] = useState(false);
+    const [money, setMoney] = useState(10);
 
     const [wires, setWires] = useState<Wire[]>([
         { color: 'red', position: { x: 100, y: 100 }, startPosition: { x: 100, y: 100 }},
@@ -85,13 +86,13 @@ const MainComponent = () => {
 
     const checkFlags = () => {
         const allTrue = flags.every(flag => flag.flag);
-        setIsComplete(allTrue);
         if (allTrue) {
-            console.log("Congrats");
+            setIsComplete(allTrue);
         } else {
-            console.log("Try again");
+            if (money >= 2) setMoney(money - 2);
         }
-    };
+
+};
 
     return (
         <main>
@@ -138,7 +139,7 @@ const MainComponent = () => {
                 }} onClick={checkFlags}>Sprawdź
                 </button>
             </div>)}
-            {isComplete && (<FinalDialog points={10} taskId={1}/>)}
+            {isComplete && (<FinalDialog points={money} taskId={1}/>)}
         </main>
     );
 };
