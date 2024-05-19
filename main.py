@@ -92,76 +92,84 @@ async def shutdown():
 
 @app.post("/users/", response_model=User)
 async def create_user(user: UserCreate):
-    query = users.insert().values(
-        name=user.name,
-        email=user.email,
-        classId=user.classId
-    )
     try:
+        query = users.insert().values(
+            name=user.name,
+            email=user.email,
+            classId=user.classId
+        )
         last_record_id = await database.execute(query)
         return {**user.dict(), "id": last_record_id}
     except sqlalchemy.exc.IntegrityError:
         raise HTTPException(status_code=400, detail="User with this name or email already exists.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/users/class", response_model=UserClassUpdate)
 async def update_user_class(user_class_update: UserClassUpdate):
-    query = users.update().where(
-        users.c.id == user_class_update.userId
-    ).values(
-        classId=user_class_update.classId
-    )
-    result = await database.execute(query)
-
-    if result == 0:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    return user_class_update
+    try:
+        query = users.update().where(
+            users.c.id == user_class_update.userId
+        ).values(
+            classId=user_class_update.classId
+        )
+        result = await database.execute(query)
+        if result == 0:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user_class_update
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.put("/scores/", response_model=ScoreUpdate)
 async def update_score(score: ScoreUpdate):
-    async with database.transaction():
-        query = scores.select().where(
-            scores.c.userId == score.userId,
-            scores.c.taskId == score.taskId
-        )
-        existing_score = await database.fetch_one(query)
-
-        if existing_score:
-            query = scores.update().where(
+    try:
+        async with database.transaction():
+            query = scores.select().where(
                 scores.c.userId == score.userId,
                 scores.c.taskId == score.taskId
-            ).values(
-                points=score.points
             )
-            await database.execute(query)
-        else:
-            query = scores.insert().values(
-                userId=score.userId,
-                taskId=score.taskId,
-                points=score.points
-            )
-            await database.execute(query)
+            existing_score = await database.fetch_one(query)
 
-    return score
+            if existing_score:
+                query = scores.update().where(
+                    scores.c.userId == score.userId,
+                    scores.c.taskId == score.taskId
+                ).values(
+                    points=score.points
+                )
+                await database.execute(query)
+            else:
+                query = scores.insert().values(
+                    userId=score.userId,
+                    taskId=score.taskId,
+                    points=score.points
+                )
+                await database.execute(query)
+        return score
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/data/")
 async def get_all_data():
-    query_users = users.select()
-    query_classes = classes.select()
-    query_tasks = tasks.select()
-    query_scores = scores.select()
+    try:
+        query_users = users.select()
+        query_classes = classes.select()
+        query_tasks = tasks.select()
+        query_scores = scores.select()
 
-    all_users = await database.fetch_all(query_users)
-    all_classes = await database.fetch_all(query_classes)
-    all_tasks = await database.fetch_all(query_tasks)
-    all_scores = await database.fetch_all(query_scores)
+        all_users = await database.fetch_all(query_users)
+        all_classes = await database.fetch_all(query_classes)
+        all_tasks = await database.fetch_all(query_tasks)
+        all_scores = await database.fetch_all(query_scores)
 
-    return {
-        "users": all_users,
-        "classes": all_classes,
-        "tasks": all_tasks,
-        "scores": all_scores
-    }
+        return {
+            "users": all_users,
+            "classes": all_classes,
+            "tasks": all_tasks,
+            "scores": all_scores
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == '__main__':
     import uvicorn
