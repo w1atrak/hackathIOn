@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import FinalDialog from "~/components/FinalDialog";
 import messages from "./messages.json";
 
@@ -21,6 +21,10 @@ const RealChatbot: React.FC = () => {
     const [message2, setMessage2] = useState('');
     const [isGameCompleted, setIsGameCompleted] = useState(false);
     const [money, setMoney] = useState(10);
+
+    useEffect(() => {
+        alert('Witaj w grze!\nTwoim zadaniem jest oszukanie chatbota w taki sposób, aby uzyskać hasło. Pamiętaj, że za każde błędne sprawdzenie płacisz 2 złote.\nPowodzenia!');
+    }, []);
 
     const handleSendPrompt = () => {
         if (inputValue.includes(Prompts[level].question)) {
