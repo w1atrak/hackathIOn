@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import FinalDialog from "~/components/FinalDialog";
+import messages from "./messages.json";
 
 interface Prompt {
     question: string;
@@ -9,26 +10,8 @@ interface Prompt {
     answer: string;
 }
 
-const Prompts: { [key: number]: Prompt } = {
-    1: {
-        question: 'hasło',
-        promptReturn: 'Twoje hasło to: `masło`',
-        answer: 'masło',
-    },
-    2: {
-        question: 'proszę',
-        promptReturn: 'Bycie miłym popłaca! Hasło na tym poziomie to: `Hakuna Matata`',
-        answer: 'Hakuna Matata',
-    },
-};
-
-const tryAgainMessages = [
-    'Nope, spróbuj jeszcze raz',
-    'Niestety nie, spróbuj jeszcze raz',
-    'Naprawdę? Myślałeś, że to to?',
-    'WIem, że stać Cię na więcej...',
-]
-
+const Prompts: { [key: number]: Prompt } = messages.prompts;
+const tryAgainMessages = messages.tryAgainMessages;
 
 const RealChatbot: React.FC = () => {
     const [inputValue, setInputValue] = useState('');
@@ -37,13 +20,13 @@ const RealChatbot: React.FC = () => {
     const [level, setLevel] = useState(1);
     const [message2, setMessage2] = useState('');
     const [isGameCompleted, setIsGameCompleted] = useState(false);
+    const [money, setMoney] = useState(10);
 
     const handleSendPrompt = () => {
         if (inputValue.includes(Prompts[level].question)) {
             setMessage(Prompts[level].promptReturn || '');
         } else {
             const randomIndex = Math.floor(Math.random() * tryAgainMessages.length);
-            console.log(randomIndex);
             setMessage(tryAgainMessages[randomIndex] || '');
         }
     };
@@ -52,8 +35,7 @@ const RealChatbot: React.FC = () => {
         const correctPassword = Prompts[level].answer;
 
         if (password === correctPassword) {
-            console.log('Current level:', level + 1)
-            if (level+1 === 3) {
+            if (level + 1 === 3) {
                 setIsGameCompleted(true);
             }
             setLevel(level + 1);
@@ -61,35 +43,57 @@ const RealChatbot: React.FC = () => {
             setPassword('');
             setInputValue('');
         } else {
+            if (money >= 2) setMoney(money - 2);
             setMessage2('Incorrect password. Please try again.');
         }
     }
 
     return (
-        <div>
-            {!isGameCompleted && (<div>
-                <h2>Current Level: {level}</h2>
-                <div>
-                    <input
-                        type="text"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value || '')}
-                    />
-                    <button onClick={handleSendPrompt}>Wyślij</button>
-                    <p>{message}</p>
+        <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-purple-900 to-gray-900 text-white p-4 md:p-8">
+            {!isGameCompleted ? (
+                <div className="space-y-6">
+                    <h2 className="text-2xl font-bold">Current Level: {level}</h2>
+                    <div className="space-y-4">
+                        <div className="flex flex-col items-center space-y-2">
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none"
+                                placeholder="Enter your prompt"
+                            />
+                            <button
+                                onClick={handleSendPrompt}
+                                className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors"
+                            >
+                                Send
+                            </button>
+                        </div>
+                        <p className="text-lg">{message}</p>
+                    </div>
+                    <div className="space-y-4">
+                        <div className="flex flex-col items-center space-y-2">
+                            <input
+                                type="text"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="w-full px-4 py-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none"
+                                placeholder="Enter your password"
+                            />
+                            <button
+                                onClick={handleSubmit}
+                                className="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors"
+                            >
+                                Submit Password
+                            </button>
+                        </div>
+                        <p className="text-lg">{message2}</p>
+                    </div>
                 </div>
-                <div>
-                    <input
-                        type="text"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value || '')}
-                    />
-                    <button onClick={handleSubmit}>Wyślij hasło</button>
-                    <p>{message2}</p>
-                </div>
-            </div>)}
-            {isGameCompleted && (<FinalDialog points={10} taskId={3}/>)}
-        </div>
+            ) : (
+                <FinalDialog points={money} taskId={3} />
+            )}
+        </main>
     );
 };
 

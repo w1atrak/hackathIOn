@@ -18,7 +18,6 @@ const offset = 20;
 
 const DraggableWire: React.FC<DraggableWireProps> = ({ color, position, onDrag, onStop }) => {
     return (
-        <div>
             <Draggable position={position} onDrag={onDrag} onStop={onStop} bounds={{
                 top: 0,
                 left: 0,
@@ -27,7 +26,6 @@ const DraggableWire: React.FC<DraggableWireProps> = ({ color, position, onDrag, 
             }}>
                 <div style={{height: '20px', width: '20px', background: color, margin: 0, padding: 0}}/>
             </Draggable>
-        </div>
     );
 };
 
