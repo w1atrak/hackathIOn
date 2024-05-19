@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import DraggableWire from './DraggableWire';
 import WireConnector from './WireConnector';
 import WireLine from './WireLine'
@@ -28,6 +28,10 @@ interface Flag {
 const MainComponent = () => {
     const [isComplete, setIsComplete] = useState(false);
     const [money, setMoney] = useState(10);
+
+    useEffect(() => {
+        alert('Prowadzący powiedział, żebyś podłączył kable RJ-45 Cross. Spróbuj zrobić to poprawnie. Pamiętaj, że za każde błędne sprawdzenie płacisz 2 złote. Powodzenia!');
+    }, []);
 
     const [wires, setWires] = useState<Wire[]>([
         { color: 'white', color2: 'orange', position: { x: 80, y: 100 }, startPosition: { x: 80, y: 100 }, num: 0},
@@ -130,6 +134,8 @@ const MainComponent = () => {
     return (
         <main className="min-h-screen bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white md:p-8 -z-10">
             {!isComplete && (<div>
+                <h2 className={'text-2xl font-bold text-center'} style={{position: 'absolute', left: 100, top: 25}}>RJ-45 Cross</h2>
+
                 {connectors.map((connector, index) => (
                     <div
                         key={index}
