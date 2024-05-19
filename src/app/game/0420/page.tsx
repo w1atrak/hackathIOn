@@ -21,6 +21,7 @@ export default function WIguessrGame() {
   const [currentStep, setCurrentStep] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
+  const [feedback2, setFeedback2] = useState<string | null>(null);
   const [points, setPoints] = useState(0);
   const [selectedRooms, setSelectedRooms] = useState<string[][]>([]);
   const [gameFinished, setGameFinished] = useState(false);
@@ -72,7 +73,8 @@ export default function WIguessrGame() {
       setPoints(points + 2);
       setFeedback("Dobrze!");
     } else {
-      setFeedback(`Źle!\nPoprawne odpowiedzi: ${currentRoom.join(', ')}`);
+      setFeedback(`Źle!`);
+      setFeedback2(`Poprawne odpowiedzi: ${currentRoom.join(', ')}`);
     }
 
     if (currentStep === 4) {
@@ -84,6 +86,7 @@ export default function WIguessrGame() {
 
     setInterval(() => {
       setFeedback("");
+      setFeedback2("");
     }, 1000);
   };
 
@@ -121,6 +124,7 @@ export default function WIguessrGame() {
         Sprawdź
       </button>
       {feedback && <p className="mt-4 text-xl">{feedback}</p>}
+      {feedback2 && <p className="mt-4 text-xl">{feedback2}</p>}
     </main>
   );
 }
