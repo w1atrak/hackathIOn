@@ -41,6 +41,12 @@ export default function MemoryGamePage() {
     setTiles(shuffledTiles);
   }, []);
 
+  useEffect(() => {
+    if (matchedIndices.length > 0 && matchedIndices.length === tiles.length) {
+      alert("TODO: Win condition here...");
+    }
+  }, [matchedIndices, tiles]);
+
   const handleFlip = (index) => {
     if (flippedIndices.length < 2 && !flippedIndices.includes(index) && !matchedIndices.includes(index)) {
       const newFlippedIndices = [...flippedIndices, index];
