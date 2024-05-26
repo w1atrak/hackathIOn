@@ -27,7 +27,7 @@ export default function FinalDialog({ points, taskId }: FinalDialogProps) {
   const [alreadyScored, setAlreadyScored] = useState(false);
 
   const calculateTotalPoints = useCallback(() => {
-    fetch("https://test.nyaaa.me/data/")
+    fetch("http://127.0.0.1:8080/data/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -60,7 +60,7 @@ export default function FinalDialog({ points, taskId }: FinalDialogProps) {
   const handleConfirm = () => {
     setLoading(true);
     if (!alreadyScored) {
-      fetch("https://test.nyaaa.me/scores/", {
+      fetch("http://127.0.0.1:8080/scores/", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

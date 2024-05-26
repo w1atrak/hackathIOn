@@ -18,7 +18,7 @@ export default function RootLayout({
     if (userId) {
       setUserId(Number(userId));
 	}
-	  fetch("https://test.nyaaa.me/data/", {
+	  fetch("http://127.0.0.1:8080/data/", {
 		  method: "GET",
 		  headers: {
 			  "Content-Type": "application/json",

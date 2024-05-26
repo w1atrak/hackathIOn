@@ -55,7 +55,7 @@ export default function ClassSelection() {
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch('https://test.nyaaa.me/data/');
+        const response = await fetch('http://127.0.0.1:8080/data/');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -90,7 +90,7 @@ export default function ClassSelection() {
     }
 
     try {
-      const response = await fetch('https://test.nyaaa.me/users/class', {
+      const response = await fetch('http://127.0.0.1:8080/users/class', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
