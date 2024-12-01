@@ -21,7 +21,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             console.log(userId)
             try {
-                const response = await fetch('https://test.nyaaa.me/data/');
+                const response = await fetch('http://127.0.0.1:8080/data/');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
@@ -78,7 +78,7 @@ export default function Home() {
 
         const fetchTasks = async () => {
             try {
-                const response = await fetch('https://test.nyaaa.me/data/');
+                const response = await fetch('http://127.0.0.1:8080/data/');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

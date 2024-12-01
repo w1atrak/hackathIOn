@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     const user = { name: username, email, classId: 7 };
     try {
-      const res = await fetch("https://test.nyaaa.me/users/", {
+      const res = await fetch("http://127.0.0.1:8080/users/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

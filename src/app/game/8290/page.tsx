@@ -1,5 +1,6 @@
-import MainComponent from "~/app/game/8290/WiresMain";
-
+"use client";
+import MainComponent from "./WiresMain";
+export const dynamic = "force-dynamic";
 export default function Page() {
   return <MainComponent />;
 }
