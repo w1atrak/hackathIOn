@@ -1,4 +1,4 @@
-# Dni Otwarte AGH - nazwa tymczasowa
+# WI are the champions
 
 ## Opis projektu
 
@@ -24,7 +24,6 @@ Gracz musi połączyć kabelki, tak aby wszytsko działało ;).
 ### 5. Memory
 Gra polegająca na odnalezieniu par - logo języków programowania.
 
+## [Screeny](docs/preview.md)
 
-## Dokumentacja techniczna
-Żeby zobaczyć dokumentację przejdź tutaj:
-[Dokumentacja techniczna](./technical_readme.md)
+## [Dokumentacja techniczna](./technical_readme.md)
